@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/02 19:21:21 by llopez            #+#    #+#             */
-/*   Updated: 2018/05/09 19:47:54 by llopez           ###   ########.fr       */
+/*   Updated: 2018/05/10 21:57:26 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ void		print_list(a_list *list)
 	a_list *here;
 
 	here = list;
+	if (here == NULL)
+		return;
 	while (here->prev != NULL)
 		here = here->prev;
 	while (here != NULL)
@@ -51,6 +53,7 @@ void		print_list(a_list *list)
 		//ft_printf("%d\n", here->content);
 		here = here->next;
 	}
+	printf("--------------");
 
 }
 
@@ -59,11 +62,8 @@ a_list		*sort(a_list *list)
 	a_list *b;
 	a_list *a;
 
-	b = (a_list *)malloc(sizeof(a_list));
-	b->content = NULL;
-	b->next = NULL;
-	b->prev = NULL;
 	a = list;
+	b = NULL;
 	while (a->next != NULL)
 	{
 		printf("----sa\n");
@@ -93,7 +93,7 @@ a_list		*sort(a_list *list)
 		printf("----pb\n");
 		pb(a, b);
 		print_list(a);
-		ft_printf("\n");
+		ft_printf("\n++\n");
 		print_list(b);
 		ft_printf("\n--------------\n");
 		printf("----ra\n");
@@ -111,7 +111,7 @@ a_list		*sort(a_list *list)
 		printf("----rr\n");
 		rr(a, b);
 		print_list(a);
-		ft_printf("\n");
+		ft_printf("\n++\n");
 		print_list(b);
 		ft_printf("\n--------------\n");
 		printf("----rra\n");

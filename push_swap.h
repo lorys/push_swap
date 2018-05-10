@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 13:02:03 by llopez            #+#    #+#             */
-/*   Updated: 2018/05/09 17:33:33 by llopez           ###   ########.fr       */
+/*   Updated: 2018/05/10 21:54:02 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,14 @@
 
 typedef struct		arg_list
 {
+	int				null;
 	int				content;
 	struct arg_list *next;
 	struct arg_list *prev;
 }					a_list;
 
+void				list_top(a_list *lst);
+void				list_bottom(a_list *lst);
 void				sa(a_list *a);
 void				sb(a_list *b);
 void				ss(a_list *a, a_list *b);
