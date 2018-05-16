@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 13:02:03 by llopez            #+#    #+#             */
-/*   Updated: 2018/05/12 16:49:09 by llopez           ###   ########.fr       */
+/*   Updated: 2018/05/16 21:14:32 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,9 @@ typedef struct		arg_list
 	struct arg_list *next;
 	struct arg_list *prev;
 }					a_list;
+
+void		sx(a_list **x);
+void		ss(a_list **a, a_list **b);
+void		px(a_list **from, a_list **to);
 
 #endif
