@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/02 19:21:21 by llopez            #+#    #+#             */
-/*   Updated: 2018/05/23 01:16:43 by llopez           ###   ########.fr       */
+/*   Updated: 2018/05/23 19:37:22 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void		print_list(a_list *a)
 void		fill_list(a_list **a, char **data, int size)
 {
 	int		i;
-	a_list **tmp;
+	a_list	**tmp;
 
 	i = 0;
 	tmp = a;
@@ -75,6 +75,27 @@ a_list		*get_minus(a_list **a)
 	return (minus);
 }
 
+a_list		*get_max(a_list **a)
+{
+	a_list	*at;
+	a_list	*max;
+	int		length;
+
+	length = 0;
+	at = *a;
+	max = NULL;
+	while (at != NULL)
+	{
+		length++;
+		if (max == NULL)
+			max = at;
+		else if (max->content < at->content)
+			max = at;
+		at = at->next;
+	}
+	return (max);
+}
+
 int		get_minus_int(a_list **a)
 {
 	a_list	*at;
@@ -100,6 +121,31 @@ int		get_minus_int(a_list **a)
 	return (minus_po);
 }
 
+int		get_max_int(a_list **a)
+{
+	a_list	*at;
+	a_list	*max;
+	int		length;
+	int		max_po;
+
+	length = 0;
+	at = *a;
+	max = NULL;
+	while (at != NULL)
+	{
+		length++;
+		if (max == NULL)
+			max = at;
+		else if (max->content < at->content)
+		{
+			max = at;
+			max_po = length;
+		}
+		at = at->next;
+	}
+	return (max_po);
+}
+
 int			a_listlen(a_list *a)
 {
 	int	length;
@@ -113,46 +159,81 @@ int			a_listlen(a_list *a)
 	return (length);
 }
 
-void		sort(a_list **a, a_list **b)
+a_list		*lastoflist(a_list **x)
+{
+	a_list *tmp;
+
+	tmp = *x;
+	if (*x == NULL)
+		return (NULL);
+	while (tmp->next != NULL)
+		tmp = tmp->next;
+	return (tmp);
+}
+
+void		sort(a_list **a, a_list **b, int step)
 {
 	a_list	*at;
 	a_list	*minus;
+	a_list	*max;
 	int		po_minus;
 	int		length;
+	int		po_max;
 
 	length = a_listlen(*a);
 	po_minus = get_minus_int(a);
+	po_max = get_max_int(a);
 	at = *a;
 	minus = get_minus(a);
-	if (*a == minus)
+	max = get_max(a);
+	if (*a == max)
 	{
 		px(a, b);
 		ft_printf("pb\n");
 	}
-	else if (po_minus <= (length/2))
+	else if ((*a)->next != NULL && (*a)->content > (*a)->next->content)
+	{
+		sx(a);
+		ft_printf("sa\n");
+	}
+	else if ((lastoflist(a))->content < (*a)->content)
 	{
 		rrx(a);
 		ft_printf("rra\n");
 	}
-	else if (po_minus > (length/2))
+	else if (po_max <= (length/2))
+	{
+		rrx(a);
+		ft_printf("rra\n");
+	}
+	else if (po_max > (length/2))
 	{
 		rx(a);
 		ft_printf("ra\n");
 	}
-	usleep(1000000);
-	system("clear");
+	/*system("clear");
 	printf("==LIST A===\n");
 	print_list(*a);
 	printf("\n==LIST B====)\n");
-	print_list(*b);
-	if (*a != NULL) { sort(a, b); }
+	print_list(*b);*/
+	step++;
+	if (*a != NULL)
+		sort(a, b, step);
+	else
+	{
+		while (*b != NULL)
+		{
+			px(b, a);
+			step++;
+		}
+		ft_printf("\n%d operations.\n", step);
+	}
 }
 
 void		oi(a_list **a, a_list **b)
 {
 	char str[4];
 
-	str[2] = '\0';
 	str[3] = '\0';
 	read(1, &str, 3);
 	if (str[0] == '\n')
@@ -200,8 +281,8 @@ int			main(int argc, char **argv)
 	if (!ft_strcmp(argv[1], "-I"))
 		oi(&a, &b);
 	else
-		sort(&a, &b);
-	/*print_list(a);
+		sort(&a, &b, 0);
+	print_list(a);/*
 	printf("\nlist b\n");
 	print_list(b);
 	while (a != NULL)
