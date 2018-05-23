@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 13:02:03 by llopez            #+#    #+#             */
-/*   Updated: 2018/05/22 16:55:10 by llopez           ###   ########.fr       */
+/*   Updated: 2018/05/23 01:09:51 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,9 @@ void		rx(a_list **x);
 void		rr(a_list **a, a_list **b);
 void		rrx(a_list **x);
 void		rrr(a_list **a, a_list **b);
+a_list		*get_minus(a_list **a);
+int			a_listlen(a_list *a);
+int			get_minus_int(a_list **a);
 
 
 // A RETIRER
