@@ -6,14 +6,41 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/02 19:21:21 by llopez            #+#    #+#             */
-/*   Updated: 2018/05/23 19:37:22 by llopez           ###   ########.fr       */
+/*   Updated: 2018/05/25 17:27:51 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
+void		print_multiple_list(a_list *a, a_list *b)
+{
+	system("clear");
+	printf("%10s%20s\n", "LIST A", "LIST B");
+	if (a == NULL)
+		printf("(null)");
+	if (b == NULL)
+		printf("%20s\n", "(null)");
+	while (b != NULL || a != NULL)
+	{
+		if (a != NULL)
+			printf("%10d", a->content);
+		else
+			printf("%10s", "");
+		if (b != NULL)
+			printf("%20d", b->content);
+		else
+			printf("%10s", "");
+		printf("\n");
+		if (a != NULL)
+			a = a->next;
+		if (b != NULL)
+			b = b->next;
+	}
+}
+
 void		print_list(a_list *a)
 {
+	system("clear");
 	if (a == NULL)
 		printf("(null)\n");
 	while (a != NULL)
@@ -49,9 +76,7 @@ void		fill_list(a_list **a, char **data, int size)
 		i++;
 	}
 	while ((*a)->prev != NULL)
-	{
 		(*a) = (*a)->prev;
-	}
 }
 
 a_list		*get_minus(a_list **a)
@@ -171,63 +196,44 @@ a_list		*lastoflist(a_list **x)
 	return (tmp);
 }
 
-void		sort(a_list **a, a_list **b, int step)
+void		sort_divise(a_list **a, a_list **b, int step)
 {
-	a_list	*at;
-	a_list	*minus;
-	a_list	*max;
-	int		po_minus;
-	int		length;
-	int		po_max;
+	a_list	*min;
+	int		po_min;
 
-	length = a_listlen(*a);
-	po_minus = get_minus_int(a);
-	po_max = get_max_int(a);
-	at = *a;
-	minus = get_minus(a);
-	max = get_max(a);
-	if (*a == max)
+	min = get_minus(a);
+	po_min = get_minus_int(a);
+	if (*a == min)
 	{
 		px(a, b);
-		ft_printf("pb\n");
+		step++;
+		print_multiple_list(*a, *b);
 	}
-	else if ((*a)->next != NULL && (*a)->content > (*a)->next->content)
-	{
-		sx(a);
-		ft_printf("sa\n");
+	else {
+		if (po_min < a_listlen(*a)/2)
+			rrx(a);
+		else
+			rx(a);
+		step++;
+		print_multiple_list(*a, *b);
 	}
-	else if ((lastoflist(a))->content < (*a)->content)
-	{
-		rrx(a);
-		ft_printf("rra\n");
-	}
-	else if (po_max <= (length/2))
-	{
-		rrx(a);
-		ft_printf("rra\n");
-	}
-	else if (po_max > (length/2))
-	{
-		rx(a);
-		ft_printf("ra\n");
-	}
-	/*system("clear");
-	printf("==LIST A===\n");
-	print_list(*a);
-	printf("\n==LIST B====)\n");
-	print_list(*b);*/
-	step++;
-	if (*a != NULL)
-		sort(a, b, step);
-	else
+	if (*a == NULL)
 	{
 		while (*b != NULL)
 		{
 			px(b, a);
 			step++;
+			print_multiple_list(*a, *b);
 		}
-		ft_printf("\n%d operations.\n", step);
+		printf("\n%d iterations.\n", step);
 	}
+	else
+		sort_divise(a, b, step);
+}
+
+void		prepare_sort(a_list **a, a_list **b, int step)
+{
+	sort_divise(a, b, step);
 }
 
 void		oi(a_list **a, a_list **b)
@@ -281,8 +287,8 @@ int			main(int argc, char **argv)
 	if (!ft_strcmp(argv[1], "-I"))
 		oi(&a, &b);
 	else
-		sort(&a, &b, 0);
-	print_list(a);/*
+		prepare_sort(&a, &b, 0);
+	/*print_list(a);
 	printf("\nlist b\n");
 	print_list(b);
 	while (a != NULL)
