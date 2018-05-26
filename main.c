@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/02 19:21:21 by llopez            #+#    #+#             */
-/*   Updated: 2018/05/26 15:41:40 by llopez           ###   ########.fr       */
+/*   Updated: 2018/05/26 19:41:35 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,48 +234,48 @@ int			bigest(a_list *x, a_list *pivot)
 	return (0);
 }
 
-void		quick_sort(a_list **a, a_list **b, a_list *pivot, int step)
+void		quick_sort(a_list **a, a_list **b, int step)
 {
-	int		found_bigs;
+	/*int		topush;
 
-	found_bigs = 0;
-	printf("pivot = %d\n", pivot->content);
-	while (found_bigs != 1)
+	topush = a_listlen(*a)/2;
+	while (topush)
 	{
-		usleep(20000);
-			if ((*a)->content > pivot->content && bigest(*a, pivot))
- 			{
-				px(a, b);
-				print_multiple_list(*a, *b);
-				while (*a != pivot)
-				{
-					rrx(a);
-					print_multiple_list(*a, *b);
-				}
-				//rrx(a);
-				//print_multiple_list(*a, *b);
-				//px(b, a);
-				//print_multiple_list(*a, *b);
+		px(a, b);
+		step++;
+		print_multiple_list(*a, *b);
+		topush--;
+	}*/
+	while (!sorted(a))
+	{
+		print_multiple_list(*a, *b);
+		//usleep(555);
+		if (/*!sorted(b) && */!sorted(a))
+		{
+		/*	if ((*a)->content > (*a)->next->content &&\
+					(*b)->content > (*b)->next->content)
+			{
+				ss(a, b);
+		print_multiple_list(*a, *b);
+				step++;
+			}*/
+			if ((*a)->content > (*a)->next->content)
+			{
+				sx(a);
+				step++;
 			}
 			else
+				rrx(a);/*
+			if ((*b)->content > (*b)->next->content)
 			{
-				rrx(a);
-				print_multiple_list(*a, *b);
-			}
-			printf("pivot = %d\n", pivot->content);
-	}
-/*	else
-	{
-		if ((*a)->content < pivot->content)
-		{
-			px(a, b);
-			while (*a)
-			{
-				
-			}
+				sx(b);
+		print_multiple_list(*a, *b);
+				step++;
+			}*/
+				rx(a);
 		}
 	}
-*/
+	printf("%d ops\n", step);
 }
 
 void		sort_insert(a_list **a, a_list **b, int step)
@@ -318,7 +318,7 @@ void		prepare_sort(a_list **a, a_list **b, int step)
 	if (a_listlen(*a) <= 5)
 		sort_insert(a, b, step);
 	else
-		quick_sort(a, b, get_maillon(a, a_listlen(*a)/2), step);
+		quick_sort(a, b, step);
 }
 
 void		oi(a_list **a, a_list **b)
