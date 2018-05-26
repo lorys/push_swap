@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/02 19:21:21 by llopez            #+#    #+#             */
-/*   Updated: 2018/05/25 17:27:51 by llopez           ###   ########.fr       */
+/*   Updated: 2018/05/26 15:41:40 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,7 +196,89 @@ a_list		*lastoflist(a_list **x)
 	return (tmp);
 }
 
-void		sort_divise(a_list **a, a_list **b, int step)
+a_list		*get_maillon(a_list **lst, int i)
+{
+	a_list *a;
+	
+	a = *lst;
+	while (a->next != NULL && i > 0)
+	{
+		a = a->next;
+		i--;
+	}
+	return (a);
+}
+
+int			sorted(a_list **a)
+{
+	a_list *tmp;
+
+	tmp = *a;
+	while (tmp->next->next != NULL)
+	{
+		if (tmp->content > tmp->next->content)
+			return (0);
+		tmp = tmp->next;
+	}
+	return (1);
+}
+
+int			bigest(a_list *x, a_list *pivot)
+{
+	while (x != NULL)
+	{
+		if (x->content > pivot->content)
+			return (1);
+		x = x->next;
+	}
+	return (0);
+}
+
+void		quick_sort(a_list **a, a_list **b, a_list *pivot, int step)
+{
+	int		found_bigs;
+
+	found_bigs = 0;
+	printf("pivot = %d\n", pivot->content);
+	while (found_bigs != 1)
+	{
+		usleep(20000);
+			if ((*a)->content > pivot->content && bigest(*a, pivot))
+ 			{
+				px(a, b);
+				print_multiple_list(*a, *b);
+				while (*a != pivot)
+				{
+					rrx(a);
+					print_multiple_list(*a, *b);
+				}
+				//rrx(a);
+				//print_multiple_list(*a, *b);
+				//px(b, a);
+				//print_multiple_list(*a, *b);
+			}
+			else
+			{
+				rrx(a);
+				print_multiple_list(*a, *b);
+			}
+			printf("pivot = %d\n", pivot->content);
+	}
+/*	else
+	{
+		if ((*a)->content < pivot->content)
+		{
+			px(a, b);
+			while (*a)
+			{
+				
+			}
+		}
+	}
+*/
+}
+
+void		sort_insert(a_list **a, a_list **b, int step)
 {
 	a_list	*min;
 	int		po_min;
@@ -228,12 +310,15 @@ void		sort_divise(a_list **a, a_list **b, int step)
 		printf("\n%d iterations.\n", step);
 	}
 	else
-		sort_divise(a, b, step);
+		sort_insert(a, b, step);
 }
 
 void		prepare_sort(a_list **a, a_list **b, int step)
 {
-	sort_divise(a, b, step);
+	if (a_listlen(*a) <= 5)
+		sort_insert(a, b, step);
+	else
+		quick_sort(a, b, get_maillon(a, a_listlen(*a)/2), step);
 }
 
 void		oi(a_list **a, a_list **b)
@@ -262,14 +347,7 @@ void		oi(a_list **a, a_list **b)
 		rx(b);
 	else if (!ft_strncmp(str, "rr", 2))
 		rr(a, b);
-// a retirer
-
-	system("clear");
-		
-	printf("==LIST A===(%s)\n", str);
-	print_list(*a);
-	printf("\n==LIST B====(%s)\n", str);
-	print_list(*b);
+	print_multiple_list(*a, *b);
 	oi(a, b);
 }
 
