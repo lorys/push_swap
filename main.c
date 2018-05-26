@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/02 19:21:21 by llopez            #+#    #+#             */
-/*   Updated: 2018/05/26 19:41:35 by llopez           ###   ########.fr       */
+/*   Updated: 2018/05/26 20:59:34 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,48 +234,40 @@ int			bigest(a_list *x, a_list *pivot)
 	return (0);
 }
 
+a_list		*sort_list(a_list *a)
+{
+	a_list	*dup;
+	a_list	*prev;
+	a_list	*list_b;
+
+	dup = (a_list *)malloc(sizeof(a_list));
+	dup->prev = NULL;
+	list_b = NULL;
+	while (a != NULL)
+	{
+		dup->content = a->content;
+		dup->next = (a->next == NULL) ? NULL : (a_list *)malloc(sizeof(a_list));
+		if (a->next != NULL)
+			dup->next->prev = dup;
+		if (a->next != NULL)
+			dup = dup->next;
+		a = a->next;
+	}
+	while (dup->prev != NULL)
+		dup = dup->prev;
+	print_multiple_list(dup, a);
+sort_insert(&dup, &list_b, 0);
+
+	
+
+	return (dup);
+}
+
 void		quick_sort(a_list **a, a_list **b, int step)
 {
-	/*int		topush;
+	a_list	*sort_lst;
 
-	topush = a_listlen(*a)/2;
-	while (topush)
-	{
-		px(a, b);
-		step++;
-		print_multiple_list(*a, *b);
-		topush--;
-	}*/
-	while (!sorted(a))
-	{
-		print_multiple_list(*a, *b);
-		//usleep(555);
-		if (/*!sorted(b) && */!sorted(a))
-		{
-		/*	if ((*a)->content > (*a)->next->content &&\
-					(*b)->content > (*b)->next->content)
-			{
-				ss(a, b);
-		print_multiple_list(*a, *b);
-				step++;
-			}*/
-			if ((*a)->content > (*a)->next->content)
-			{
-				sx(a);
-				step++;
-			}
-			else
-				rrx(a);/*
-			if ((*b)->content > (*b)->next->content)
-			{
-				sx(b);
-		print_multiple_list(*a, *b);
-				step++;
-			}*/
-				rx(a);
-		}
-	}
-	printf("%d ops\n", step);
+	sort_lst = sort_list(*a);
 }
 
 void		sort_insert(a_list **a, a_list **b, int step)
