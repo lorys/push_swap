@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/02 19:21:21 by llopez            #+#    #+#             */
-/*   Updated: 2018/05/26 20:59:34 by llopez           ###   ########.fr       */
+/*   Updated: 2018/05/27 12:49:08 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,9 +214,11 @@ int			sorted(a_list **a)
 	a_list *tmp;
 
 	tmp = *a;
-	while (tmp->next->next != NULL)
+	while (tmp != NULL)
 	{
-		if (tmp->content > tmp->next->content)
+		if (tmp->next != NULL && tmp->content > tmp->next->content)
+			return (0);
+		else if (tmp->prev != NULL && tmp->content < tmp->prev->content)
 			return (0);
 		tmp = tmp->next;
 	}
@@ -257,17 +259,48 @@ a_list		*sort_list(a_list *a)
 		dup = dup->prev;
 	print_multiple_list(dup, a);
 sort_insert(&dup, &list_b, 0);
-
-	
-
 	return (dup);
+}
+
+a_list		*get_mediane(a_list *a)
+{
+	a_list	*sort_lst;
+
+	sort_lst = sort_list(a);
+	return (get_maillon(&sort_lst, a_listlen(sort_lst) / 2));
 }
 
 void		quick_sort(a_list **a, a_list **b, int step)
 {
-	a_list	*sort_lst;
+	a_list	*mediane; 
 
-	sort_lst = sort_list(*a);
+	mediane = get_mediane(*a);
+	print_multiple_list(*a, *b);
+		usleep(99999);
+	printf("mediane = %d\n", mediane->content);
+		usleep(99999);
+	while (bigest(*a, mediane))
+	{
+		usleep(99999);
+		if ((*a)->content <= mediane->content)
+			px(a, b);
+		else
+			rrx(a);
+	print_multiple_list(*a, *b);
+	}
+	while (a_listlen(*a) > 2)
+		px(a, b);
+	while (!sorted(a) || *b != NULL)
+	{
+		rrx(a);
+	print_multiple_list(*a, *b);
+		if ((*a)->content > (*a)->next->content)
+			sx(a);
+	print_multiple_list(*a, *b);
+		px(b, a);
+	print_multiple_list(*a, *b);
+	}
+	print_multiple_list(*a, *b);
 }
 
 void		sort_insert(a_list **a, a_list **b, int step)
@@ -281,7 +314,6 @@ void		sort_insert(a_list **a, a_list **b, int step)
 	{
 		px(a, b);
 		step++;
-		print_multiple_list(*a, *b);
 	}
 	else {
 		if (po_min < a_listlen(*a)/2)
@@ -289,7 +321,6 @@ void		sort_insert(a_list **a, a_list **b, int step)
 		else
 			rx(a);
 		step++;
-		print_multiple_list(*a, *b);
 	}
 	if (*a == NULL)
 	{
@@ -297,9 +328,7 @@ void		sort_insert(a_list **a, a_list **b, int step)
 		{
 			px(b, a);
 			step++;
-			print_multiple_list(*a, *b);
 		}
-		printf("\n%d iterations.\n", step);
 	}
 	else
 		sort_insert(a, b, step);
