@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/02 19:21:21 by llopez            #+#    #+#             */
-/*   Updated: 2018/05/27 12:49:08 by llopez           ###   ########.fr       */
+/*   Updated: 2018/05/27 18:10:39 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -257,8 +257,7 @@ a_list		*sort_list(a_list *a)
 	}
 	while (dup->prev != NULL)
 		dup = dup->prev;
-	print_multiple_list(dup, a);
-sort_insert(&dup, &list_b, 0);
+sort_insert(&dup, &list_b, 1);
 	return (dup);
 }
 
@@ -270,76 +269,84 @@ a_list		*get_mediane(a_list *a)
 	return (get_maillon(&sort_lst, a_listlen(sort_lst) / 2));
 }
 
-void		quick_sort(a_list **a, a_list **b, int step)
+int			lower_than(a_list *a, a_list *pivot)
 {
-	a_list	*mediane; 
-
-	mediane = get_mediane(*a);
-	print_multiple_list(*a, *b);
-		usleep(99999);
-	printf("mediane = %d\n", mediane->content);
-		usleep(99999);
-	while (bigest(*a, mediane))
+	while (a != NULL)
 	{
-		usleep(99999);
-		if ((*a)->content <= mediane->content)
-			px(a, b);
-		else
-			rrx(a);
-	print_multiple_list(*a, *b);
+		if (a->content < pivot->content)
+			return (1);
+		a = a->next;
 	}
-	while (a_listlen(*a) > 2)
-		px(a, b);
-	while (!sorted(a) || *b != NULL)
-	{
-		rrx(a);
-	print_multiple_list(*a, *b);
-		if ((*a)->content > (*a)->next->content)
-			sx(a);
-	print_multiple_list(*a, *b);
-		px(b, a);
-	print_multiple_list(*a, *b);
-	}
-	print_multiple_list(*a, *b);
+	return (0);
 }
 
-void		sort_insert(a_list **a, a_list **b, int step)
+void		quick_sort(a_list **a, a_list **b)
 {
-	a_list	*min;
-	int		po_min;
+	a_list	*mediane; 
+	a_list  *start;
 
-	min = get_minus(a);
-	po_min = get_minus_int(a);
-	if (*a == min)
+	mediane = get_mediane(*a);
+	while (lower_than(*a, mediane))
 	{
-		px(a, b);
-		step++;
-	}
-	else {
-		if (po_min < a_listlen(*a)/2)
-			rrx(a);
+		if ((*a)->content < mediane->content)
+			px(a, b, "pb");
 		else
-			rx(a);
-		step++;
+			rrx(a, "rra");
+	//print_multiple_list(*a, *b);
 	}
+	if (a_listlen(*a) > 2)
+		quick_sort(a, b);
+	else
+	{
+		if ((*a)->content > (*a)->next->content)
+			sx(a, "sa");
+		sort_insert(b, a, 0);
+	}
+	//print_multiple_list(*a, *b);
+}
+
+void		sort_insert(a_list **a, a_list **b, int silent)
+{
+	a_list	*max;
+	int		po_max;
+
+	max = get_max(a);
+	po_max = get_max_int(a);
+	if (*a == max)
+		px(a, b, (silent != 1) ? "pb" : "");
+	else {
+		if (po_max < a_listlen(*a)/2)
+			rrx(a, (silent != 1) ? "rra" : "");
+		else
+			rx(a, (silent != 1) ? "ra" : "");
+	}
+	//print_multiple_list(*a, *b);
 	if (*a == NULL)
 	{
 		while (*b != NULL)
-		{
-			px(b, a);
-			step++;
-		}
+			px(b, a, (silent != 1) ? "pa" : "");
+	//print_multiple_list(*a, *b);
 	}
 	else
-		sort_insert(a, b, step);
+		sort_insert(a, b, silent);
 }
 
-void		prepare_sort(a_list **a, a_list **b, int step)
+void		prepare_sort(a_list **a, a_list **b)
 {
-	if (a_listlen(*a) <= 5)
-		sort_insert(a, b, step);
-	else
-		quick_sort(a, b, step);
+	/*if (a_listlen(*a) <= 5)
+		sort_insert(a, b, 0);
+	else*/
+		quick_sort(a, b);
+		while (*b != NULL)
+		{
+			px(b, a, "pa");
+	//print_multiple_list(*a, *b);
+		}
+		while (get_minus(a) != *a)
+		{
+			rrx(a, "rra");
+	//print_multiple_list(*a, *b);
+		}
 }
 
 void		oi(a_list **a, a_list **b)
@@ -351,23 +358,23 @@ void		oi(a_list **a, a_list **b)
 	if (str[0] == '\n')
 		oi(a, b);
 	if (!ft_strncmp(str, "sa", 2))
-		sx(a);
+		sx(a, "");
 	else if (!ft_strncmp(str, "rra", 3))
-		rrx(a);
+		rrx(a, "");
 	else if (!ft_strncmp(str, "rrb", 3))
-		rrx(b);
+		rrx(b, "");
 	else if (!ft_strncmp(str, "sb", 2))
-		sx(b);
+		sx(b, "");
 	else if (!ft_strncmp(str, "pb", 2))
-		px(a, b);
+		px(a, b, "");
 	else if (!ft_strncmp(str, "pa", 2))
-		px(b, a);
+		px(b, a, "");
 	else if (!ft_strncmp(str, "ra", 2))
-		rx(a);
+		rx(a, "");
 	else if (!ft_strncmp(str, "rb", 2))
-		rx(b);
+		rx(b, "");
 	else if (!ft_strncmp(str, "rr", 2))
-		rr(a, b);
+		rr(a, b, "");
 	print_multiple_list(*a, *b);
 	oi(a, b);
 }
@@ -386,14 +393,11 @@ int			main(int argc, char **argv)
 	if (!ft_strcmp(argv[1], "-I"))
 		oi(&a, &b);
 	else
-		prepare_sort(&a, &b, 0);
-	/*print_list(a);
-	printf("\nlist b\n");
-	print_list(b);
-	while (a != NULL)
-	{
-		printf("\n==========\nprev = %p\nnext = %p\ncontent = %d\n=========\n", a->prev, a->next, a->content);
-		a = a->next;
-	}*/
+		prepare_sort(&a, &b);
+	/*print_multiple_list(a, b);
+	if (sorted(&a))
+		ft_printf("sorted with success !\n");
+	else
+		ft_printf("not sorted\n");*/
 	return (0);
 }

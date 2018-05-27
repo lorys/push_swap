@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 13:02:03 by llopez            #+#    #+#             */
-/*   Updated: 2018/05/26 19:28:28 by llopez           ###   ########.fr       */
+/*   Updated: 2018/05/27 17:31:55 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,19 +23,19 @@ typedef struct		arg_list
 	struct arg_list *prev;
 }					a_list;
 
-void		sx(a_list **x);
-void		ss(a_list **a, a_list **b);
-void		px(a_list **from, a_list **to);
-void		rx(a_list **x);
-void		rr(a_list **a, a_list **b);
-void		rrx(a_list **x);
-void		rrr(a_list **a, a_list **b);
+void		sx(a_list **x, char *silent);
+void		ss(a_list **a, a_list **b, char *silent);
+void		px(a_list **from, a_list **to, char *silent);
+void		rx(a_list **x, char *silent);
+void		rr(a_list **a, a_list **b, char *silent);
+void		rrx(a_list **x, char *silent);
+void		rrr(a_list **a, a_list **b, char *silent);
 a_list		*get_minus(a_list **a);
 int			a_listlen(a_list *a);
 int			get_minus_int(a_list **a);
-void		prepare_sort(a_list **a, a_list **b, int step);
-void		sort_insert(a_list **a, a_list **b, int step);
-void		quick_sort(a_list **a, a_list **b, int step);
+void		prepare_sort(a_list **a, a_list **b);
+void		sort_insert(a_list **a, a_list **b, int silent);
+void		quick_sort(a_list **a, a_list **b);
 
 // A RETIRER
 int system(const char *command);
