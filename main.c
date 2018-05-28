@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/02 19:21:21 by llopez            #+#    #+#             */
-/*   Updated: 2018/05/27 18:10:39 by llopez           ###   ########.fr       */
+/*   Updated: 2018/05/28 20:13:28 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -280,29 +280,75 @@ int			lower_than(a_list *a, a_list *pivot)
 	return (0);
 }
 
-void		quick_sort(a_list **a, a_list **b)
+void		quick_sort(a_list **a, a_list **b, a_list *med)
 {
 	a_list	*mediane; 
-	a_list  *start;
 
 	mediane = get_mediane(*a);
-	while (lower_than(*a, mediane))
+	printf("mediane = %d\n", mediane->content);
+	usleep(90000);
+	med->content = mediane->content;
+	printf("save mediane...\n");
+	usleep(90000);
+	med->next = (a_list *)malloc(sizeof(a_list));
+	med->next->prev = med;
+		printf("\033[41m cherche tout ce qui est en dessous de la mediane..\n");
+	usleep(90000);
+	while (lower_than(*a, med))
 	{
-		if ((*a)->content < mediane->content)
+		printf("%d < %d ?\n", (*a)->content, med->content);
+	usleep(90000);
+		if ((*a)->content < med->content)
+		{
+		printf("\033[0m \033[44m On push %d sur B \033[0m \n", (*a)->content);
+	usleep(90000);
 			px(a, b, "pb");
+		}
 		else
+		{
+			printf("suivant..\n");
+	usleep(90000);
 			rrx(a, "rra");
-	//print_multiple_list(*a, *b);
+		}
 	}
+	printf("\033[0m on a push tout ce qui etait au dessous de la mediane %d\n", mediane->content);
+	usleep(90000);
+	printf("\n la list A fait %d\n", a_listlen(*a));
+	usleep(90000);
 	if (a_listlen(*a) > 2)
-		quick_sort(a, b);
-	else
 	{
-		if ((*a)->content > (*a)->next->content)
-			sx(a, "sa");
-		sort_insert(b, a, 0);
+		printf("On recommence !\n");
+	usleep(90000);
+		med = med->next;
+		quick_sort(a, b, med);
 	}
-	//print_multiple_list(*a, *b);
+	else {
+		printf("on remet sur A les elements plus grand que la mediane %d\n", med->content);
+	usleep(90000);
+		while (bigest(*b, med))
+		{
+			printf("%d > %d ?\n", (*b)->content, med->content);
+	usleep(90000);
+			if ((*b)->content > med->prev->content)
+			{
+				printf("On push %d sur A\n", (*b)->content);
+	usleep(90000);
+				px(b, a, "pa");
+			}
+			else
+			{
+				printf("suivant..\n");
+	usleep(90000);
+				rrx(b, "rra");
+			}
+		}
+		printf("On a push tout ce qui etait au dessus de la mediane %d\n", med->content);
+		med = med->next;
+	usleep(90000);
+		printf("et sa repart !\n");
+	usleep(90000);
+		quick_sort(a, b, med);
+	}
 }
 
 void		sort_insert(a_list **a, a_list **b, int silent)
@@ -320,32 +366,36 @@ void		sort_insert(a_list **a, a_list **b, int silent)
 		else
 			rx(a, (silent != 1) ? "ra" : "");
 	}
-	//print_multiple_list(*a, *b);
 	if (*a == NULL)
-	{
 		while (*b != NULL)
 			px(b, a, (silent != 1) ? "pa" : "");
-	//print_multiple_list(*a, *b);
-	}
 	else
 		sort_insert(a, b, silent);
 }
 
 void		prepare_sort(a_list **a, a_list **b)
 {
-	/*if (a_listlen(*a) <= 5)
-		sort_insert(a, b, 0);
-	else*/
-		quick_sort(a, b);
-		while (*b != NULL)
-		{
-			px(b, a, "pa");
-	//print_multiple_list(*a, *b);
-		}
+	a_list	*med;
+	int		i;
+
+	printf("----------------------------------------------------\n");
+	i = 0;
+	med = (a_list *)malloc(sizeof(a_list));
+	med->prev = NULL;
+	while (i < a_listlen(*a))
+	{
+		med[i].content = 0;
+		i++;
+	}
+		quick_sort(a, b, med);
 		while (get_minus(a) != *a)
-		{
 			rrx(a, "rra");
-	//print_multiple_list(*a, *b);
+		printf("taille list a = %d\n", a_listlen(*a));
+		print_list(*a);
+		while (i < a_listlen(*a))
+		{
+			printf("mediane saved = %d\n", med[i].content);
+			i++;
 		}
 }
 
@@ -394,10 +444,10 @@ int			main(int argc, char **argv)
 		oi(&a, &b);
 	else
 		prepare_sort(&a, &b);
-	/*print_multiple_list(a, b);
+	//print_multiple_list(a, b);
 	if (sorted(&a))
 		ft_printf("sorted with success !\n");
 	else
-		ft_printf("not sorted\n");*/
+		ft_printf("not sorted\n");
 	return (0);
 }

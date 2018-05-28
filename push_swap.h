@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 13:02:03 by llopez            #+#    #+#             */
-/*   Updated: 2018/05/27 17:31:55 by llopez           ###   ########.fr       */
+/*   Updated: 2018/05/28 18:52:20 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int			a_listlen(a_list *a);
 int			get_minus_int(a_list **a);
 void		prepare_sort(a_list **a, a_list **b);
 void		sort_insert(a_list **a, a_list **b, int silent);
-void		quick_sort(a_list **a, a_list **b);
+void		quick_sort(a_list **a, a_list **b, a_list *med);
 
 // A RETIRER
 int system(const char *command);
