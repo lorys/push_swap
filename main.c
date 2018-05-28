@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/02 19:21:21 by llopez            #+#    #+#             */
-/*   Updated: 2018/05/28 20:13:28 by llopez           ###   ########.fr       */
+/*   Updated: 2018/05/28 21:18:06 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -283,70 +283,70 @@ int			lower_than(a_list *a, a_list *pivot)
 void		quick_sort(a_list **a, a_list **b, a_list *med)
 {
 	a_list	*mediane; 
+	int		i;
 
 	mediane = get_mediane(*a);
 	printf("mediane = %d\n", mediane->content);
-	usleep(90000);
-	med->content = mediane->content;
-	printf("save mediane...\n");
-	usleep(90000);
-	med->next = (a_list *)malloc(sizeof(a_list));
-	med->next->prev = med;
+	if (med->next == NULL)
+	{
+		med->content = mediane->content;
+		printf("save mediane...\n");
+		med->next = (a_list *)malloc(sizeof(a_list));
+		med->next->prev = med;
+	}
 		printf("\033[41m cherche tout ce qui est en dessous de la mediane..\n");
-	usleep(90000);
 	while (lower_than(*a, med))
 	{
 		printf("%d < %d ?\n", (*a)->content, med->content);
-	usleep(90000);
-		if ((*a)->content < med->content)
+		if ((*a)->content <= med->content)
 		{
 		printf("\033[0m \033[44m On push %d sur B \033[0m \n", (*a)->content);
-	usleep(90000);
 			px(a, b, "pb");
 		}
 		else
 		{
 			printf("suivant..\n");
-	usleep(90000);
 			rrx(a, "rra");
 		}
 	}
 	printf("\033[0m on a push tout ce qui etait au dessous de la mediane %d\n", mediane->content);
-	usleep(90000);
 	printf("\n la list A fait %d\n", a_listlen(*a));
-	usleep(90000);
 	if (a_listlen(*a) > 2)
 	{
 		printf("On recommence !\n");
-	usleep(90000);
 		med = med->next;
 		quick_sort(a, b, med);
 	}
 	else {
+		if ((*a)->content > (*a)->next->content)
+			sx(a, "sa");
 		printf("on remet sur A les elements plus grand que la mediane %d\n", med->content);
-	usleep(90000);
-		while (bigest(*b, med))
+	printf("list a\n");
+	print_list(*a);
+	printf("list b\n");
+	print_list(*b);
+	i = a_listlen(*b);
+		while (i < a_listlen(*b))
 		{
-			printf("%d > %d ?\n", (*b)->content, med->content);
-	usleep(90000);
+			printf("%d > %d ?\n", (*b)->content, med->prev->content);
 			if ((*b)->content > med->prev->content)
 			{
 				printf("On push %d sur A\n", (*b)->content);
-	usleep(90000);
 				px(b, a, "pa");
+	print_list(*a);
 			}
 			else
 			{
 				printf("suivant..\n");
-	usleep(90000);
 				rrx(b, "rra");
 			}
+			i--;
 		}
-		printf("On a push tout ce qui etait au dessus de la mediane %d\n", med->content);
-		med = med->next;
+		printf("On a push tout ce qui etait au dessus de la mediane %d\n", med->prev->content);
 	usleep(90000);
 		printf("et sa repart !\n");
 	usleep(90000);
+		med = med->next;
 		quick_sort(a, b, med);
 	}
 }
@@ -382,11 +382,10 @@ void		prepare_sort(a_list **a, a_list **b)
 	i = 0;
 	med = (a_list *)malloc(sizeof(a_list));
 	med->prev = NULL;
-	while (i < a_listlen(*a))
-	{
-		med[i].content = 0;
-		i++;
-	}
+	med->content = 0;
+	med->next = (a_list *)malloc(sizeof(a_list));
+	med->next->prev = med;
+	med = med->next;
 		quick_sort(a, b, med);
 		while (get_minus(a) != *a)
 			rrx(a, "rra");
