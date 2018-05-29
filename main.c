@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/02 19:21:21 by llopez            #+#    #+#             */
-/*   Updated: 2018/05/29 17:42:36 by llopez           ###   ########.fr       */
+/*   Updated: 2018/05/29 17:59:20 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -375,25 +375,18 @@ void		sort_insert(a_list **a, a_list **b, int silent)
 
 	max = get_max(a);
 	po_max = get_max_int(a);
-		print_multiple_list(*a, *b);
-		usleep(100000);
 	if (*a == max)
 		px(a, b, (silent != 1) ? "pb" : "");
-	else {
+	else
 		if (po_max < a_listlen(*a)/2)
 			rrx(a, (silent != 1) ? "rra" : "");
 		else
 			rx(a, (silent != 1) ? "ra" : "");
-	}
-		print_multiple_list(*a, *b);
-		usleep(100000);
 	if (*a == NULL)
 		while (*b != NULL)
 			px(b, a, (silent != 1) ? "pa" : "");
 	else
 		sort_insert(a, b, silent);
-		print_multiple_list(*a, *b);
-		usleep(100000);
 }
 
 void		prepare_sort(a_list **a, a_list **b)
