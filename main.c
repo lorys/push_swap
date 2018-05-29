@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/02 19:21:21 by llopez            #+#    #+#             */
-/*   Updated: 2018/05/28 21:18:06 by llopez           ###   ########.fr       */
+/*   Updated: 2018/05/29 17:42:36 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,7 +236,7 @@ int			bigest(a_list *x, a_list *pivot)
 	return (0);
 }
 
-a_list		*sort_list(a_list *a)
+a_list		*sort_list(a_list *a, int i)
 {
 	a_list	*dup;
 	a_list	*prev;
@@ -245,7 +245,7 @@ a_list		*sort_list(a_list *a)
 	dup = (a_list *)malloc(sizeof(a_list));
 	dup->prev = NULL;
 	list_b = NULL;
-	while (a != NULL)
+	while (a != NULL && i)
 	{
 		dup->content = a->content;
 		dup->next = (a->next == NULL) ? NULL : (a_list *)malloc(sizeof(a_list));
@@ -254,6 +254,7 @@ a_list		*sort_list(a_list *a)
 		if (a->next != NULL)
 			dup = dup->next;
 		a = a->next;
+		i--;
 	}
 	while (dup->prev != NULL)
 		dup = dup->prev;
@@ -261,11 +262,11 @@ sort_insert(&dup, &list_b, 1);
 	return (dup);
 }
 
-a_list		*get_mediane(a_list *a)
+a_list		*get_mediane(a_list *a, int i)
 {
 	a_list	*sort_lst;
 
-	sort_lst = sort_list(a);
+	sort_lst = sort_list(a, i);
 	return (get_maillon(&sort_lst, a_listlen(sort_lst) / 2));
 }
 
@@ -280,74 +281,90 @@ int			lower_than(a_list *a, a_list *pivot)
 	return (0);
 }
 
-void		quick_sort(a_list **a, a_list **b, a_list *med)
+a_list		*bigest_of_list(a_list *a)
+{
+	a_list *tmp;
+
+	tmp = a;
+	while (a->next != NULL)
+	{
+		if (a->content > tmp->content)
+			tmp = a;
+		a = a->next;
+	}
+	return (tmp);
+}
+
+void		quick_sort(a_list **a, a_list **b, a_list *med, int pushed)
 {
 	a_list	*mediane; 
 	int		i;
 
-	mediane = get_mediane(*a);
-	printf("mediane = %d\n", mediane->content);
-	if (med->next == NULL)
+	mediane = get_mediane(*a, (pushed > 1) ? pushed : -1);
+	if (!sorted(a))
 	{
-		med->content = mediane->content;
-		printf("save mediane...\n");
-		med->next = (a_list *)malloc(sizeof(a_list));
-		med->next->prev = med;
-	}
-		printf("\033[41m cherche tout ce qui est en dessous de la mediane..\n");
-	while (lower_than(*a, med))
-	{
-		printf("%d < %d ?\n", (*a)->content, med->content);
-		if ((*a)->content <= med->content)
+		printf("\033[41m count(A) > 2 \033[0m\n");
+		usleep(99999);
+			med->content = mediane->content;
+			printf("#debug 1\n");
+			med->next = (a_list *)malloc(sizeof(a_list));
+			printf("#debug 2\n");
+			med->next->prev = med;
+			printf("#debug 3\n");
+		printf("\033[45m \t save mediane (%d) \033[0m\n", med->content);
+		while (lower_than(*a, med))
 		{
-		printf("\033[0m \033[44m On push %d sur B \033[0m \n", (*a)->content);
-			px(a, b, "pb");
-		}
-		else
-		{
-			printf("suivant..\n");
-			rrx(a, "rra");
-		}
-	}
-	printf("\033[0m on a push tout ce qui etait au dessous de la mediane %d\n", mediane->content);
-	printf("\n la list A fait %d\n", a_listlen(*a));
-	if (a_listlen(*a) > 2)
-	{
-		printf("On recommence !\n");
-		med = med->next;
-		quick_sort(a, b, med);
-	}
-	else {
-		if ((*a)->content > (*a)->next->content)
-			sx(a, "sa");
-		printf("on remet sur A les elements plus grand que la mediane %d\n", med->content);
-	printf("list a\n");
-	print_list(*a);
-	printf("list b\n");
-	print_list(*b);
-	i = a_listlen(*b);
-		while (i < a_listlen(*b))
-		{
-			printf("%d > %d ?\n", (*b)->content, med->prev->content);
-			if ((*b)->content > med->prev->content)
+			printf("#debug 4\n");
+			if ((*a)->content < med->content)
 			{
-				printf("On push %d sur A\n", (*b)->content);
-				px(b, a, "pa");
-	print_list(*a);
+				px(a, b, "pb");
+				printf("\t\033[50m push %d sur B\t\033[0m\n", (*a)->content);
 			}
 			else
-			{
-				printf("suivant..\n");
-				rrx(b, "rra");
-			}
-			i--;
+				rrx(a, "rra");
+			printf("#debug 5\n");
 		}
-		printf("On a push tout ce qui etait au dessus de la mediane %d\n", med->prev->content);
-	usleep(90000);
-		printf("et sa repart !\n");
-	usleep(90000);
 		med = med->next;
-		quick_sort(a, b, med);
+		quick_sort(a, b, med, 0);
+	}
+	else
+	{
+		printf("\033[44m count(A) < 2 \033[0m\n");
+		usleep(99999);
+
+		if (med->prev == NULL)
+		{
+			printf("\t\t\t\033[30m IL N'Y A PLUS DE MEDIANE ! \033[0m\n");
+			usleep(50000);
+		}
+
+		if ((*a)->content > (*a)->next->content)
+			sx(a, "sa");
+		else if (med->next == NULL && med->prev != NULL)
+			med = med->prev;
+		pushed = 0;
+		while (bigest_of_list(*b)->content >= med->content)
+		{
+			printf("\033[46m mediane = %d \033[0m \n", med->content);
+			usleep(50000);
+			if ((*b)->content > med->content)
+			{
+				px(b, a, "pa");
+				pushed++;
+			}
+			else
+				rx(b, "rb");
+		}
+		if (pushed == 0 && med->prev != NULL)
+			med = med->prev;
+		else
+			while (med->next != NULL)
+				med = med->next;
+		printf("\033[49m %d push sur B \033[0m \n", pushed);
+		print_multiple_list(*a, *b);
+		usleep(1000000);
+		if (!sorted(a) || *b != NULL)
+			quick_sort(a, b, med, pushed);
 	}
 }
 
@@ -358,6 +375,8 @@ void		sort_insert(a_list **a, a_list **b, int silent)
 
 	max = get_max(a);
 	po_max = get_max_int(a);
+		print_multiple_list(*a, *b);
+		usleep(100000);
 	if (*a == max)
 		px(a, b, (silent != 1) ? "pb" : "");
 	else {
@@ -366,11 +385,15 @@ void		sort_insert(a_list **a, a_list **b, int silent)
 		else
 			rx(a, (silent != 1) ? "ra" : "");
 	}
+		print_multiple_list(*a, *b);
+		usleep(100000);
 	if (*a == NULL)
 		while (*b != NULL)
 			px(b, a, (silent != 1) ? "pa" : "");
 	else
 		sort_insert(a, b, silent);
+		print_multiple_list(*a, *b);
+		usleep(100000);
 }
 
 void		prepare_sort(a_list **a, a_list **b)
@@ -382,20 +405,10 @@ void		prepare_sort(a_list **a, a_list **b)
 	i = 0;
 	med = (a_list *)malloc(sizeof(a_list));
 	med->prev = NULL;
-	med->content = 0;
-	med->next = (a_list *)malloc(sizeof(a_list));
-	med->next->prev = med;
-	med = med->next;
-		quick_sort(a, b, med);
+		quick_sort(a, b, med, 0);
 		while (get_minus(a) != *a)
 			rrx(a, "rra");
 		printf("taille list a = %d\n", a_listlen(*a));
-		print_list(*a);
-		while (i < a_listlen(*a))
-		{
-			printf("mediane saved = %d\n", med[i].content);
-			i++;
-		}
 }
 
 void		oi(a_list **a, a_list **b)
