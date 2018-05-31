@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/02 19:21:21 by llopez            #+#    #+#             */
-/*   Updated: 2018/05/29 17:59:20 by llopez           ###   ########.fr       */
+/*   Updated: 2018/05/31 18:20:34 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -299,43 +299,37 @@ void		quick_sort(a_list **a, a_list **b, a_list *med, int pushed)
 {
 	a_list	*mediane; 
 	int		i;
+	a_list	*start;
 
 	mediane = get_mediane(*a, (pushed > 1) ? pushed : -1);
-	if (!sorted(a))
+	if (!sorted(a) && *a != bigest_of_list(*a))
 	{
-		printf("\033[41m count(A) > 2 \033[0m\n");
-		usleep(99999);
-			med->content = mediane->content;
-			printf("#debug 1\n");
-			med->next = (a_list *)malloc(sizeof(a_list));
-			printf("#debug 2\n");
-			med->next->prev = med;
-			printf("#debug 3\n");
-		printf("\033[45m \t save mediane (%d) \033[0m\n", med->content);
+		if (med->next != NULL)
+			med = med->next;
+		med->content = mediane->content;
+		med->next = (a_list *)malloc(sizeof(a_list));
+		med->next->prev = med;
 		while (lower_than(*a, med))
 		{
-			printf("#debug 4\n");
 			if ((*a)->content < med->content)
-			{
 				px(a, b, "pb");
-				printf("\t\033[50m push %d sur B\t\033[0m\n", (*a)->content);
-			}
 			else
 				rrx(a, "rra");
-			printf("#debug 5\n");
 		}
-		med = med->next;
+		printf("\033[45m PART 1 \033[0m\n\n");
 		quick_sort(a, b, med, 0);
 	}
 	else
 	{
-		printf("\033[44m count(A) < 2 \033[0m\n");
-		usleep(99999);
-
 		if (med->prev == NULL)
 		{
-			printf("\t\t\t\033[30m IL N'Y A PLUS DE MEDIANE ! \033[0m\n");
-			usleep(50000);
+			printf("\t\t\t \033[41m NOUVELLE MEDIANE DE B \033[0m\n\n");
+			usleep(1000000);
+			med->prev = (a_list *)malloc(sizeof(a_list));
+			med->prev->prev = NULL;
+			med->prev->content = get_mediane(*b, a_listlen(*b))->content;
+			med->prev->next = med;
+			med = med->prev;
 		}
 
 		if ((*a)->content > (*a)->next->content)
@@ -345,8 +339,6 @@ void		quick_sort(a_list **a, a_list **b, a_list *med, int pushed)
 		pushed = 0;
 		while (bigest_of_list(*b)->content >= med->content)
 		{
-			printf("\033[46m mediane = %d \033[0m \n", med->content);
-			usleep(50000);
 			if ((*b)->content > med->content)
 			{
 				px(b, a, "pa");
@@ -355,16 +347,31 @@ void		quick_sort(a_list **a, a_list **b, a_list *med, int pushed)
 			else
 				rx(b, "rb");
 		}
+		print_multiple_list(*a, *b);
+		start = med;
+		while (med->prev != NULL)
+			med = med->prev;
+		while (med->next != NULL)
+		{
+			printf("\033[41m %d \033[0m -> ", med->content);
+			med = med->next;
+		}
+		med = start;
+		printf("\n\n");
 		if (pushed == 0 && med->prev != NULL)
 			med = med->prev;
 		else
 			while (med->next != NULL)
 				med = med->next;
-		printf("\033[49m %d push sur B \033[0m \n", pushed);
-		print_multiple_list(*a, *b);
-		usleep(1000000);
-		if (!sorted(a) || *b != NULL)
+				printf("\033[41m PART 2 \033[0m\n\n");
+		if (a_listlen(*b) > 2)
 			quick_sort(a, b, med, pushed);
+		else {
+			if ((*b)->content < (*b)->next->content)
+				sx(b, "sb");
+			px(b, a, "pa");
+			px(b, a, "pa");
+		}
 	}
 }
 
