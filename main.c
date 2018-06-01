@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/02 19:21:21 by llopez            #+#    #+#             */
-/*   Updated: 2018/05/31 18:20:34 by llopez           ###   ########.fr       */
+/*   Updated: 2018/06/01 21:27:24 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -258,16 +258,16 @@ a_list		*sort_list(a_list *a, int i)
 	}
 	while (dup->prev != NULL)
 		dup = dup->prev;
-sort_insert(&dup, &list_b, 1);
+	sort_insert(&dup, &list_b, 1);
 	return (dup);
 }
 
-a_list		*get_mediane(a_list *a, int i)
+int			get_mediane(a_list *a, int i)
 {
 	a_list	*sort_lst;
-
+	
 	sort_lst = sort_list(a, i);
-	return (get_maillon(&sort_lst, a_listlen(sort_lst) / 2));
+	return (get_maillon(&sort_lst, a_listlen(sort_lst) / 2)->content);
 }
 
 int			lower_than(a_list *a, a_list *pivot)
@@ -297,37 +297,46 @@ a_list		*bigest_of_list(a_list *a)
 
 void		quick_sort(a_list **a, a_list **b, a_list *med, int pushed)
 {
-	a_list	*mediane; 
+	int		mediane; 
 	int		i;
-	a_list	*start;
+	a_list	*tmp;
 
-	mediane = get_mediane(*a, (pushed > 1) ? pushed : -1);
-	if (!sorted(a) && *a != bigest_of_list(*a))
+	printf("get_mediane()\n");
+	mediane = get_mediane(*a, (pushed > 1) ? pushed : a_listlen(*a));
+	printf("mediane made\n");
+	printf("list a = %s\n", (sorted(a))?"sorted":"not sorted");
+	if (!sorted(a) && a_listlen(*a) > 2)
 	{
+		printf("on rentre dans IF\n");
 		if (med->next != NULL)
 			med = med->next;
-		med->content = mediane->content;
+		printf("on met la liste de mediane au bout\n");
+		med->content = mediane;
 		med->next = (a_list *)malloc(sizeof(a_list));
 		med->next->prev = med;
+		printf("mediane saved !\n");
 		while (lower_than(*a, med))
 		{
+			printf("on met tout ce qu'il y a au dessous de %d\n", med->content);
+			printf("%d < %d\n", (*a)->content, med->content);
 			if ((*a)->content < med->content)
 				px(a, b, "pb");
 			else
 				rrx(a, "rra");
 		}
-		printf("\033[45m PART 1 \033[0m\n\n");
+		printf("on a push tout ce qu'il y avait au dessous de la mediane.\n");
+		printf("taille de list A : %d\ntaille de list B : %d\n", a_listlen(*a), a_listlen(*b));
 		quick_sort(a, b, med, 0);
 	}
 	else
 	{
+		printf("la mediane est au tout debut ?");
 		if (med->prev == NULL)
 		{
 			printf("\t\t\t \033[41m NOUVELLE MEDIANE DE B \033[0m\n\n");
-			usleep(1000000);
 			med->prev = (a_list *)malloc(sizeof(a_list));
 			med->prev->prev = NULL;
-			med->prev->content = get_mediane(*b, a_listlen(*b))->content;
+			med->prev->content = get_mediane(*b, a_listlen(*b));
 			med->prev->next = med;
 			med = med->prev;
 		}
@@ -337,6 +346,19 @@ void		quick_sort(a_list **a, a_list **b, a_list *med, int pushed)
 		else if (med->next == NULL && med->prev != NULL)
 			med = med->prev;
 		pushed = 0;
+		tmp = med;
+		while (tmp->prev != NULL)
+			tmp = tmp->prev;
+		print_multiple_list(*a, *b);
+		while (tmp != NULL)
+		{
+			if (tmp == med)
+				printf("\033[41m %d \033[0m ->", tmp->content);
+			else
+				printf("\033[42m %d \033[0m ->", tmp->content);
+			tmp = tmp->next;
+		}
+		printf("=================\n");
 		while (bigest_of_list(*b)->content >= med->content)
 		{
 			if ((*b)->content > med->content)
@@ -347,23 +369,11 @@ void		quick_sort(a_list **a, a_list **b, a_list *med, int pushed)
 			else
 				rx(b, "rb");
 		}
-		print_multiple_list(*a, *b);
-		start = med;
-		while (med->prev != NULL)
-			med = med->prev;
-		while (med->next != NULL)
-		{
-			printf("\033[41m %d \033[0m -> ", med->content);
-			med = med->next;
-		}
-		med = start;
-		printf("\n\n");
 		if (pushed == 0 && med->prev != NULL)
 			med = med->prev;
-		else
+		else if (med != NULL)
 			while (med->next != NULL)
 				med = med->next;
-				printf("\033[41m PART 2 \033[0m\n\n");
 		if (a_listlen(*b) > 2)
 			quick_sort(a, b, med, pushed);
 		else {
