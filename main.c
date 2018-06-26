@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/02 19:21:21 by llopez            #+#    #+#             */
-/*   Updated: 2018/06/01 21:27:24 by llopez           ###   ########.fr       */
+/*   Updated: 2018/06/26 16:17:50 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void		print_multiple_list(a_list *a, a_list *b)
 		if (b != NULL)
 			b = b->next;
 	}
+	usleep(50000);
 }
 
 void		print_list(a_list *a)
@@ -45,10 +46,10 @@ void		print_list(a_list *a)
 		printf("(null)\n");
 	while (a != NULL)
 	{
-		//ft_printf("addr %p\n", a);
+		ft_printf("addr %p\n", a);
 		ft_printf("%d\n", a->content);
-		//ft_printf("next = %p\n", a->next);
-		//ft_printf("prev = %p\n", a->prev);
+		ft_printf("next = %p\n", a->next);
+		ft_printf("prev = %p\n", a->prev);
 		a = a->next;
 	}
 }
@@ -218,8 +219,6 @@ int			sorted(a_list **a)
 	{
 		if (tmp->next != NULL && tmp->content > tmp->next->content)
 			return (0);
-		else if (tmp->prev != NULL && tmp->content < tmp->prev->content)
-			return (0);
 		tmp = tmp->next;
 	}
 	return (1);
@@ -245,7 +244,7 @@ a_list		*sort_list(a_list *a, int i)
 	dup = (a_list *)malloc(sizeof(a_list));
 	dup->prev = NULL;
 	list_b = NULL;
-	while (a != NULL && i)
+	while (a != NULL)
 	{
 		dup->content = a->content;
 		dup->next = (a->next == NULL) ? NULL : (a_list *)malloc(sizeof(a_list));
@@ -255,7 +254,10 @@ a_list		*sort_list(a_list *a, int i)
 			dup = dup->next;
 		a = a->next;
 		i--;
+		if (i == 0)
+			break;
 	}
+	dup->next = NULL;
 	while (dup->prev != NULL)
 		dup = dup->prev;
 	sort_insert(&dup, &list_b, 1);
@@ -265,9 +267,11 @@ a_list		*sort_list(a_list *a, int i)
 int			get_mediane(a_list *a, int i)
 {
 	a_list	*sort_lst;
-	
+	a_list	*tmp;
+
 	sort_lst = sort_list(a, i);
-	return (get_maillon(&sort_lst, a_listlen(sort_lst) / 2)->content);
+	tmp = get_maillon(&sort_lst, a_listlen(sort_lst) / 2);
+	return (tmp->content);
 }
 
 int			lower_than(a_list *a, a_list *pivot)
@@ -295,110 +299,69 @@ a_list		*bigest_of_list(a_list *a)
 	return (tmp);
 }
 
-void		quick_sort(a_list **a, a_list **b, a_list *med, int pushed)
+void		sort_logic_insert(a_list **a, a_list **b)
 {
-	int		mediane; 
-	int		i;
-	a_list	*tmp;
-
-	printf("get_mediane()\n");
-	mediane = get_mediane(*a, (pushed > 1) ? pushed : a_listlen(*a));
-	printf("mediane made\n");
-	printf("list a = %s\n", (sorted(a))?"sorted":"not sorted");
-	if (!sorted(a) && a_listlen(*a) > 2)
+	if (*b == NULL && sorted(a))
+		return;
+	if ((*b)->content < (*a)->content && \
+			lastoflist(a)->content < (*b)->content)
 	{
-		printf("on rentre dans IF\n");
-		if (med->next != NULL)
-			med = med->next;
-		printf("on met la liste de mediane au bout\n");
-		med->content = mediane;
-		med->next = (a_list *)malloc(sizeof(a_list));
-		med->next->prev = med;
-		printf("mediane saved !\n");
-		while (lower_than(*a, med))
-		{
-			printf("on met tout ce qu'il y a au dessous de %d\n", med->content);
-			printf("%d < %d\n", (*a)->content, med->content);
-			if ((*a)->content < med->content)
-				px(a, b, "pb");
-			else
-				rrx(a, "rra");
-		}
-		printf("on a push tout ce qu'il y avait au dessous de la mediane.\n");
-		printf("taille de list A : %d\ntaille de list B : %d\n", a_listlen(*a), a_listlen(*b));
-		quick_sort(a, b, med, 0);
+		px(b, a, "pa");
+	}
+	else if ((*b)->content > (*a)->content && \
+			(*b)->content < (*a)->next->content)
+	{
+		rrx(a, "rra");
+		px(b, a, "pa");
+	}
+	else if (get_max(b)->content > get_max(a)->content && get_max(b) == *b \
+			&& get_minus(a) == *a)
+	{
+		px(b, a, "pa");
+	}
+	else if (get_max(a)->content < (*b)->content && *a == get_max(a))
+	{
+		rrx(a, "rra");
+		px(b, a, "pa");
 	}
 	else
-	{
-		printf("la mediane est au tout debut ?");
-		if (med->prev == NULL)
-		{
-			printf("\t\t\t \033[41m NOUVELLE MEDIANE DE B \033[0m\n\n");
-			med->prev = (a_list *)malloc(sizeof(a_list));
-			med->prev->prev = NULL;
-			med->prev->content = get_mediane(*b, a_listlen(*b));
-			med->prev->next = med;
-			med = med->prev;
-		}
+		rrx(a, "rra");
+	sort_logic_insert(a, b);
+}
 
+
+void		sort_logic_filter(a_list **a, a_list **b)
+{
+	if (!sorted(a))
+	{
 		if ((*a)->content > (*a)->next->content)
-			sx(a, "sa");
-		else if (med->next == NULL && med->prev != NULL)
-			med = med->prev;
-		pushed = 0;
-		tmp = med;
-		while (tmp->prev != NULL)
-			tmp = tmp->prev;
-		print_multiple_list(*a, *b);
-		while (tmp != NULL)
-		{
-			if (tmp == med)
-				printf("\033[41m %d \033[0m ->", tmp->content);
-			else
-				printf("\033[42m %d \033[0m ->", tmp->content);
-			tmp = tmp->next;
-		}
-		printf("=================\n");
-		while (bigest_of_list(*b)->content >= med->content)
-		{
-			if ((*b)->content > med->content)
-			{
-				px(b, a, "pa");
-				pushed++;
-			}
-			else
-				rx(b, "rb");
-		}
-		if (pushed == 0 && med->prev != NULL)
-			med = med->prev;
-		else if (med != NULL)
-			while (med->next != NULL)
-				med = med->next;
-		if (a_listlen(*b) > 2)
-			quick_sort(a, b, med, pushed);
-		else {
-			if ((*b)->content < (*b)->next->content)
-				sx(b, "sb");
-			px(b, a, "pa");
-			px(b, a, "pa");
-		}
+			px(a, b, "pb");
+		else
+			rx(a, "ra");
+		if (!sorted(a))
+			sort_logic_filter(a, b);
+		else
+			sort_logic_insert(a, b);
 	}
 }
 
 void		sort_insert(a_list **a, a_list **b, int silent)
 {
-	a_list	*max;
-	int		po_max;
-
-	max = get_max(a);
-	po_max = get_max_int(a);
-	if (*a == max)
-		px(a, b, (silent != 1) ? "pb" : "");
-	else
-		if (po_max < a_listlen(*a)/2)
-			rrx(a, (silent != 1) ? "rra" : "");
+	a_list	*min;
+	int		po_min;
+	
+	if (*a != NULL)
+	{
+		min = get_minus(a);
+		po_min = get_minus_int(a);
+		if (*a == min)
+			px(a, b, (silent != 1) ? "pb" : "");
 		else
-			rx(a, (silent != 1) ? "ra" : "");
+			if (po_min < a_listlen(*a)/2)
+				rrx(a, (silent != 1) ? "rra" : "");
+			else
+				rx(a, (silent != 1) ? "ra" : "");
+	}
 	if (*a == NULL)
 		while (*b != NULL)
 			px(b, a, (silent != 1) ? "pa" : "");
@@ -411,44 +374,10 @@ void		prepare_sort(a_list **a, a_list **b)
 	a_list	*med;
 	int		i;
 
-	printf("----------------------------------------------------\n");
 	i = 0;
-	med = (a_list *)malloc(sizeof(a_list));
-	med->prev = NULL;
-		quick_sort(a, b, med, 0);
-		while (get_minus(a) != *a)
-			rrx(a, "rra");
-		printf("taille list a = %d\n", a_listlen(*a));
-}
-
-void		oi(a_list **a, a_list **b)
-{
-	char str[4];
-
-	str[3] = '\0';
-	read(1, &str, 3);
-	if (str[0] == '\n')
-		oi(a, b);
-	if (!ft_strncmp(str, "sa", 2))
-		sx(a, "");
-	else if (!ft_strncmp(str, "rra", 3))
-		rrx(a, "");
-	else if (!ft_strncmp(str, "rrb", 3))
-		rrx(b, "");
-	else if (!ft_strncmp(str, "sb", 2))
-		sx(b, "");
-	else if (!ft_strncmp(str, "pb", 2))
-		px(a, b, "");
-	else if (!ft_strncmp(str, "pa", 2))
-		px(b, a, "");
-	else if (!ft_strncmp(str, "ra", 2))
-		rx(a, "");
-	else if (!ft_strncmp(str, "rb", 2))
-		rx(b, "");
-	else if (!ft_strncmp(str, "rr", 2))
-		rr(a, b, "");
-	print_multiple_list(*a, *b);
-	oi(a, b);
+	med = NULL;
+//	sort_insert(a, b, 0);
+	sort_logic_filter(a, b);
 }
 
 int			main(int argc, char **argv)
@@ -462,14 +391,11 @@ int			main(int argc, char **argv)
 		fill_list(&a, &argv[2], argc-2);
 	else
 		fill_list(&a, &argv[1], argc-1);
-	if (!ft_strcmp(argv[1], "-I"))
-		oi(&a, &b);
-	else
-		prepare_sort(&a, &b);
-	//print_multiple_list(a, b);
-	if (sorted(&a))
+	prepare_sort(&a, &b);
+	/*if (sorted(&a))
 		ft_printf("sorted with success !\n");
 	else
 		ft_printf("not sorted\n");
+	print_multiple_list(a, b);*/
 	return (0);
 }
