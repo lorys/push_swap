@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/02 19:21:21 by llopez            #+#    #+#             */
-/*   Updated: 2018/06/26 16:17:50 by llopez           ###   ########.fr       */
+/*   Updated: 2018/06/27 17:50:44 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void		print_multiple_list(a_list *a, a_list *b)
 		if (b != NULL)
 			b = b->next;
 	}
-	usleep(50000);
+	usleep(5000);
 }
 
 void		print_list(a_list *a)
@@ -120,6 +120,23 @@ a_list		*get_max(a_list **a)
 		at = at->next;
 	}
 	return (max);
+}
+
+int		get_position_int(a_list **x, a_list *y)
+{
+	int		i;
+	a_list	*tmp;
+
+	tmp = *x;
+	i = 0;
+	while (tmp != NULL)
+	{
+		if (tmp == y)
+			return(i);
+		i++;
+		tmp = tmp->next;
+	}
+	return (-1);
 }
 
 int		get_minus_int(a_list **a)
@@ -208,6 +225,22 @@ a_list		*get_maillon(a_list **lst, int i)
 		i--;
 	}
 	return (a);
+}
+
+a_list		*between(a_list **a, int one, int two)
+{
+	a_list *tmp;
+
+	if (*a == NULL)
+		return (NULL);
+	tmp = *a;
+	while (tmp != NULL)
+	{ 
+		if (tmp->content > one && tmp->content < two)
+			return (tmp);
+		tmp = tmp->next;
+	}
+	return (NULL);
 }
 
 int			sorted(a_list **a)
@@ -301,48 +334,67 @@ a_list		*bigest_of_list(a_list *a)
 
 void		sort_logic_insert(a_list **a, a_list **b)
 {
-	if (*b == NULL && sorted(a))
-		return;
-	if ((*b)->content < (*a)->content && \
-			lastoflist(a)->content < (*b)->content)
+	a_list	*max_found;
+	a_list	*tmp;
+	a_list	*found;
+
+	tmp = *b;
+	max_found = NULL;
+	while (tmp != NULL)
 	{
-		px(b, a, "pa");
+		if ((found = between(&tmp, (*a)->content, lastoflist(a)->content)))
+		{
+			if (max_found == NULL)
+				max_found = found;
+			else
+				max_found = (found->content > max_found->content) ? \
+					found : max_found;
+		}
+		else
+			break;
+		tmp = tmp->next;
 	}
-	else if ((*b)->content > (*a)->content && \
-			(*b)->content < (*a)->next->content)
+	print_multiple_list(*a, *b);
+	if (between(b, (*a)->content, lastoflist(a)->content))
 	{
-		rrx(a, "rra");
-		px(b, a, "pa");
-	}
-	else if (get_max(b)->content > get_max(a)->content && get_max(b) == *b \
-			&& get_minus(a) == *a)
-	{
-		px(b, a, "pa");
-	}
-	else if (get_max(a)->content < (*b)->content && *a == get_max(a))
-	{
-		rrx(a, "rra");
-		px(b, a, "pa");
+		while (*b != max_found)
+		{
+			if (get_position_int(a, max_found) < a_listlen(*b)/2)
+				rrx(b, "rrb");
+			else
+				rx(b, "rb");
+	print_multiple_list(*a, *b);
+		}
+		if (*b == max_found)
+			px(b, a, "pa");
+	print_multiple_list(*a, *b);
 	}
 	else
 		rrx(a, "rra");
-	sort_logic_insert(a, b);
+	print_multiple_list(*a, *b);
+/*	if (get_minus(a)->content > get_minus(b)->content)
+		sort_logic_push_rest(a, b);
+*/	if (*b != NULL)
+		sort_logic_insert(a, b);
 }
 
-
-void		sort_logic_filter(a_list **a, a_list **b)
+void		sort_logic_presort(a_list **a, a_list **b)
 {
-	if (!sorted(a))
+	print_multiple_list(*a, *b);
+	while (!sorted(a))
 	{
-		if ((*a)->content > (*a)->next->content)
+		if (!between(a, (*a)->content, (*a)->next->content))
+		{
+			if ((*a)->content > (*a)->next->content && (*a) != get_max(a))
+				sx(a, "sa");
+		}
+		else
 			px(a, b, "pb");
-		else
-			rx(a, "ra");
-		if (!sorted(a))
-			sort_logic_filter(a, b);
-		else
-			sort_logic_insert(a, b);
+		print_multiple_list(*a, *b);
+		rrx(a, "rra");
+		print_multiple_list(*a, *b);
 	}
+	sort_logic_insert(a, b);
 }
 
 void		sort_insert(a_list **a, a_list **b, int silent)
@@ -376,8 +428,8 @@ void		prepare_sort(a_list **a, a_list **b)
 
 	i = 0;
 	med = NULL;
-//	sort_insert(a, b, 0);
-	sort_logic_filter(a, b);
+	//sort_insert(a, b, 0);
+	sort_logic_presort(a, b);
 }
 
 int			main(int argc, char **argv)
