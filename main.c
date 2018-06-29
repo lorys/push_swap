@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/02 19:21:21 by llopez            #+#    #+#             */
-/*   Updated: 2018/06/27 17:50:44 by llopez           ###   ########.fr       */
+/*   Updated: 2018/06/29 05:21:09 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void		print_multiple_list(a_list *a, a_list *b)
 		if (b != NULL)
 			b = b->next;
 	}
-	usleep(5000);
+	usleep(100000);
 }
 
 void		print_list(a_list *a)
@@ -236,7 +236,8 @@ a_list		*between(a_list **a, int one, int two)
 	tmp = *a;
 	while (tmp != NULL)
 	{ 
-		if (tmp->content > one && tmp->content < two)
+		if ((tmp->content > one && tmp->content < two) || \
+			(tmp->content < one && tmp->content > two))
 			return (tmp);
 		tmp = tmp->next;
 	}
@@ -354,27 +355,29 @@ void		sort_logic_insert(a_list **a, a_list **b)
 			break;
 		tmp = tmp->next;
 	}
-	print_multiple_list(*a, *b);
-	if (between(b, (*a)->content, lastoflist(a)->content))
+	if (max_found != NULL)
 	{
-		while (*b != max_found)
-		{
-			if (get_position_int(a, max_found) < a_listlen(*b)/2)
-				rrx(b, "rrb");
-			else
-				rx(b, "rb");
-	print_multiple_list(*a, *b);
-		}
-		if (*b == max_found)
-			px(b, a, "pa");
+		px(b, a, "pa");
+		rrx(a, "rra");
 	print_multiple_list(*a, *b);
 	}
 	else
-		rrx(a, "rra");
+	{
+		while (*b != NULL)
+		{
+			while (get_minus(b) != *b)
+			{
+				if (get_position_int(b, get_minus(b)) < a_listlen(*b)/2)
+					rrx(b, "rrb");
+				else
+					rx(b, "rb");
 	print_multiple_list(*a, *b);
-/*	if (get_minus(a)->content > get_minus(b)->content)
-		sort_logic_push_rest(a, b);
-*/	if (*b != NULL)
+			}
+			px(b, a, "pa");
+		}
+	}
+	print_multiple_list(*a, *b);
+	if (*b != NULL || !sorted(a))
 		sort_logic_insert(a, b);
 }
 
@@ -391,9 +394,19 @@ void		sort_logic_presort(a_list **a, a_list **b)
 		else
 			px(a, b, "pb");
 		print_multiple_list(*a, *b);
-		rrx(a, "rra");
+		if (!sorted(a))
+			rrx(a, "rra");
 		print_multiple_list(*a, *b);
 	}
+	while (get_minus(a) != lastoflist(a))
+	{
+		if (get_position_int(a, get_minus(a)) > a_listlen(*a)/2)
+			rx(a, "ra");
+		else
+			rrx(a, "rra");
+	}
+	print_multiple_list(*a, *b);
+	usleep(100000);
 	sort_logic_insert(a, b);
 }
 
@@ -402,6 +415,7 @@ void		sort_insert(a_list **a, a_list **b, int silent)
 	a_list	*min;
 	int		po_min;
 	
+		print_multiple_list(*a, *b);
 	if (*a != NULL)
 	{
 		min = get_minus(a);
@@ -413,7 +427,9 @@ void		sort_insert(a_list **a, a_list **b, int silent)
 				rrx(a, (silent != 1) ? "rra" : "");
 			else
 				rx(a, (silent != 1) ? "ra" : "");
+		print_multiple_list(*a, *b);
 	}
+		print_multiple_list(*a, *b);
 	if (*a == NULL)
 		while (*b != NULL)
 			px(b, a, (silent != 1) ? "pa" : "");
@@ -444,10 +460,10 @@ int			main(int argc, char **argv)
 	else
 		fill_list(&a, &argv[1], argc-1);
 	prepare_sort(&a, &b);
-	/*if (sorted(&a))
+	if (sorted(&a))
 		ft_printf("sorted with success !\n");
 	else
 		ft_printf("not sorted\n");
-	print_multiple_list(a, b);*/
+	print_multiple_list(a, b);
 	return (0);
 }
