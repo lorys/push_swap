@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/02 19:21:21 by llopez            #+#    #+#             */
-/*   Updated: 2018/06/29 05:21:09 by llopez           ###   ########.fr       */
+/*   Updated: 2018/07/02 19:07:21 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void		print_multiple_list(a_list *a, a_list *b)
 		if (b != NULL)
 			b = b->next;
 	}
-	usleep(100000);
+	usleep(1000000);
 }
 
 void		print_list(a_list *a)
@@ -357,24 +357,34 @@ void		sort_logic_insert(a_list **a, a_list **b)
 	}
 	if (max_found != NULL)
 	{
+		while (max_found != *b)
+		{
+			if (get_position_int(a, max_found) < a_listlen(*a)/2)
+				rrx(b, "rrb");
+			else
+				rx(b, "rb");
+			print_multiple_list(*a, *b);
+		}
 		px(b, a, "pa");
-		rrx(a, "rra");
-	print_multiple_list(*a, *b);
+		print_multiple_list(*a, *b);
 	}
 	else
 	{
-		while (*b != NULL)
+		while (get_minus(b) != *b)
 		{
-			while (get_minus(b) != *b)
-			{
-				if (get_position_int(b, get_minus(b)) < a_listlen(*b)/2)
-					rrx(b, "rrb");
-				else
-					rx(b, "rb");
-	print_multiple_list(*a, *b);
-			}
-			px(b, a, "pa");
+			if (get_position_int(b, get_minus(b)) < a_listlen(*b)/2)
+				rrx(b, "rrb");
+			else
+				rx(b, "rb");
 		}
+		while (get_minus(a) != *a)
+		{
+			if (get_position_int(a, get_minus(a)) < a_listlen(*b)/2)
+				rrx(a, "rra");
+			else
+				rx(a, "ra");
+		}
+		px(b, a, "pa");
 	}
 	print_multiple_list(*a, *b);
 	if (*b != NULL || !sorted(a))
