@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/02 19:21:21 by llopez            #+#    #+#             */
-/*   Updated: 2018/07/03 15:40:27 by llopez           ###   ########.fr       */
+/*   Updated: 2018/07/03 18:49:51 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void		print_multiple_list(a_list *a, a_list *b)
 		if (b != NULL)
 			b = b->next;
 	}
-//	usleep(1000000);
+	usleep(100000);
 }
 
 void		print_list(a_list *a)
@@ -333,22 +333,74 @@ a_list		*bigest_of_list(a_list *a)
 	return (tmp);
 }
 
-void		sort_merge(a_list **a, a_list **b)
+a_list		**quick_push(a_list **a, a_list **b)
 {
 		int		mediane;
 		int		nbr_pushed;
+		a_list	**start;
 
+		start = (a_list **)malloc(sizeof(a_list *) * 2);
 		mediane = get_mediane(*a, a_listlen(*a));
-		while (get_max(a)->content > mediane)
+		start[0] = NULL;
+		start[1] = NULL;
+		while (get_minus(a)->content < mediane)
 		{
-			if ((*a)->content > mediane)
+			if ((*a)->content < mediane)
 			{
+				if (start[0] == NULL)
+					start[0] = *a;
+				start[1] = *a;
 				px(a, b, "pb");
 			}
 			rrx(a, "rra");
 		print_multiple_list(*a, *b);
-		printf("\033[41m la mediane est %d \033[0m\n", mediane);
 		}
+		printf("\033[41m la mediane est %d \033[0m\n", mediane);
+		usleep(10000);
+		return (start);
+}
+
+void		quick_sort(a_list **a, a_list **b)
+{
+	a_list **startend;
+
+		printf("\n\033[42m 1 \033[0m\n");
+	startend = quick_push(a, b);
+		printf("\n\033[42m 2 \033[0m\n");
+		if (*startend == NULL)
+		{
+			while (*b != NULL)
+			{
+				px(b, a, "pa");
+				if ((*a)->content > (*a)->next->content)
+					sx(a, "sa");
+			}
+		}
+		else
+		{
+			if (a_listlen(*a) > 2)
+				quick_sort(a, b);
+			while (*b != startend[0])
+			{
+				if (get_position_int(b, startend[0]) > a_listlen(*b)/2)
+					rx(b, "rb");
+				else
+					rrx(b, "rrb");
+			print_multiple_list(*a, *b);
+			}
+			while (*b != startend[1])
+			{
+				px(b, a, "pa");
+				if (!sorted(a))
+				{
+					quick_sort(a, b);
+					break;
+				}
+			}
+		}
+			print_multiple_list(*a, *b);
+	if (!sorted(a) || *b == NULL)
+		quick_sort(a, b);
 }
 
 void		sort_insert(a_list **a, a_list **b, int silent)
@@ -383,7 +435,7 @@ void		prepare_sort(a_list **a, a_list **b)
 	i = 0;
 	med = NULL;
 	//sort_insert(a, b, 0);
-	sort_merge(a, b);
+	quick_sort(a, b);
 }
 
 int			main(int argc, char **argv)
