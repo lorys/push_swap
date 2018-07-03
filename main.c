@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/02 19:21:21 by llopez            #+#    #+#             */
-/*   Updated: 2018/07/02 19:07:21 by llopez           ###   ########.fr       */
+/*   Updated: 2018/07/03 15:40:27 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void		print_multiple_list(a_list *a, a_list *b)
 		if (b != NULL)
 			b = b->next;
 	}
-	usleep(1000000);
+//	usleep(1000000);
 }
 
 void		print_list(a_list *a)
@@ -333,91 +333,22 @@ a_list		*bigest_of_list(a_list *a)
 	return (tmp);
 }
 
-void		sort_logic_insert(a_list **a, a_list **b)
+void		sort_merge(a_list **a, a_list **b)
 {
-	a_list	*max_found;
-	a_list	*tmp;
-	a_list	*found;
+		int		mediane;
+		int		nbr_pushed;
 
-	tmp = *b;
-	max_found = NULL;
-	while (tmp != NULL)
-	{
-		if ((found = between(&tmp, (*a)->content, lastoflist(a)->content)))
+		mediane = get_mediane(*a, a_listlen(*a));
+		while (get_max(a)->content > mediane)
 		{
-			if (max_found == NULL)
-				max_found = found;
-			else
-				max_found = (found->content > max_found->content) ? \
-					found : max_found;
-		}
-		else
-			break;
-		tmp = tmp->next;
-	}
-	if (max_found != NULL)
-	{
-		while (max_found != *b)
-		{
-			if (get_position_int(a, max_found) < a_listlen(*a)/2)
-				rrx(b, "rrb");
-			else
-				rx(b, "rb");
-			print_multiple_list(*a, *b);
-		}
-		px(b, a, "pa");
-		print_multiple_list(*a, *b);
-	}
-	else
-	{
-		while (get_minus(b) != *b)
-		{
-			if (get_position_int(b, get_minus(b)) < a_listlen(*b)/2)
-				rrx(b, "rrb");
-			else
-				rx(b, "rb");
-		}
-		while (get_minus(a) != *a)
-		{
-			if (get_position_int(a, get_minus(a)) < a_listlen(*b)/2)
-				rrx(a, "rra");
-			else
-				rx(a, "ra");
-		}
-		px(b, a, "pa");
-	}
-	print_multiple_list(*a, *b);
-	if (*b != NULL || !sorted(a))
-		sort_logic_insert(a, b);
-}
-
-void		sort_logic_presort(a_list **a, a_list **b)
-{
-	print_multiple_list(*a, *b);
-	while (!sorted(a))
-	{
-		if (!between(a, (*a)->content, (*a)->next->content))
-		{
-			if ((*a)->content > (*a)->next->content && (*a) != get_max(a))
-				sx(a, "sa");
-		}
-		else
-			px(a, b, "pb");
-		print_multiple_list(*a, *b);
-		if (!sorted(a))
+			if ((*a)->content > mediane)
+			{
+				px(a, b, "pb");
+			}
 			rrx(a, "rra");
 		print_multiple_list(*a, *b);
-	}
-	while (get_minus(a) != lastoflist(a))
-	{
-		if (get_position_int(a, get_minus(a)) > a_listlen(*a)/2)
-			rx(a, "ra");
-		else
-			rrx(a, "rra");
-	}
-	print_multiple_list(*a, *b);
-	usleep(100000);
-	sort_logic_insert(a, b);
+		printf("\033[41m la mediane est %d \033[0m\n", mediane);
+		}
 }
 
 void		sort_insert(a_list **a, a_list **b, int silent)
@@ -425,7 +356,6 @@ void		sort_insert(a_list **a, a_list **b, int silent)
 	a_list	*min;
 	int		po_min;
 	
-		print_multiple_list(*a, *b);
 	if (*a != NULL)
 	{
 		min = get_minus(a);
@@ -437,9 +367,7 @@ void		sort_insert(a_list **a, a_list **b, int silent)
 				rrx(a, (silent != 1) ? "rra" : "");
 			else
 				rx(a, (silent != 1) ? "ra" : "");
-		print_multiple_list(*a, *b);
 	}
-		print_multiple_list(*a, *b);
 	if (*a == NULL)
 		while (*b != NULL)
 			px(b, a, (silent != 1) ? "pa" : "");
@@ -455,7 +383,7 @@ void		prepare_sort(a_list **a, a_list **b)
 	i = 0;
 	med = NULL;
 	//sort_insert(a, b, 0);
-	sort_logic_presort(a, b);
+	sort_merge(a, b);
 }
 
 int			main(int argc, char **argv)
@@ -470,10 +398,10 @@ int			main(int argc, char **argv)
 	else
 		fill_list(&a, &argv[1], argc-1);
 	prepare_sort(&a, &b);
-	if (sorted(&a))
+/*	if (sorted(&a))
 		ft_printf("sorted with success !\n");
 	else
 		ft_printf("not sorted\n");
-	print_multiple_list(a, b);
+	print_multiple_list(a, b);*/
 	return (0);
 }
