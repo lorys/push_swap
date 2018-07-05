@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 13:02:03 by llopez            #+#    #+#             */
-/*   Updated: 2018/07/03 18:07:15 by llopez           ###   ########.fr       */
+/*   Updated: 2018/07/05 06:06:40 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # include <unistd.h>
 # include <libft.h>
 # include <stdio.h>
+# include "libft/ft_printf.h"
 
 typedef struct		arg_list
 {
@@ -35,7 +36,7 @@ int			a_listlen(a_list *a);
 int			get_minus_int(a_list **a);
 void		prepare_sort(a_list **a, a_list **b);
 void		sort_insert(a_list **a, a_list **b, int silent);
-void		quick_sort(a_list **a, a_list **b);
+void		quick_sort(a_list **a, a_list **b, a_list **startend);
 
 // A RETIRER
 int system(const char *command);

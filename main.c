@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/02 19:21:21 by llopez            #+#    #+#             */
-/*   Updated: 2018/07/03 18:49:51 by llopez           ###   ########.fr       */
+/*   Updated: 2018/07/05 07:24:38 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void		print_multiple_list(a_list *a, a_list *b)
 		if (b != NULL)
 			b = b->next;
 	}
-	usleep(100000);
 }
 
 void		print_list(a_list *a)
@@ -333,74 +332,86 @@ a_list		*bigest_of_list(a_list *a)
 	return (tmp);
 }
 
-a_list		**quick_push(a_list **a, a_list **b)
+int			sorted_part(a_list *a, int len)
+{
+	while (a->next != NULL && len)
+	{
+		if (a->content > a->next->content)
+			return (0);
+		a = a->next;
+		len--;
+	}
+	return (1);
+}
+
+int			range_len(a_list *a, a_list **startend)
+{
+	int len;
+
+	len = 0;
+	while (a != NULL && a != startend[0])
+		a = a->next;
+	while (a != NULL && a != startend[1])
+	{
+		a = a->next;
+		len++;
+	}
+	len = (len > 0) ? len + 1 : len;
+	return (len);
+}
+
+a_list		*quick_pusha(a_list **a, a_list **b, int toscan)
 {
 		int		mediane;
 		int		nbr_pushed;
-		a_list	**start;
 
-		start = (a_list **)malloc(sizeof(a_list *) * 2);
-		mediane = get_mediane(*a, a_listlen(*a));
-		start[0] = NULL;
-		start[1] = NULL;
-		while (get_minus(a)->content < mediane)
+		mediane = get_mediane(*b, toscan);
+		while (get_max(b)->content > mediane && toscan)
+		{
+			if ((*b)->content > mediane)
+			{
+				px(b, a, "pa");
+	print_multiple_list(*a, *b);
+			}
+			rrx(a, "rrb");
+			toscan--;
+		print_multiple_list(*a, *b);
+		}
+		return (mediane);
+}
+
+a_list		*quick_pushb(a_list **a, a_list **b, int toscan)
+{
+		int		mediane;
+		int		nbr_pushed;
+
+		mediane = get_mediane(*a, toscan);
+		while (get_minus(a)->content < mediane && toscan)
 		{
 			if ((*a)->content < mediane)
 			{
-				if (start[0] == NULL)
-					start[0] = *a;
-				start[1] = *a;
 				px(a, b, "pb");
+	print_multiple_list(*a, *b);
 			}
 			rrx(a, "rra");
-		print_multiple_list(*a, *b);
+	print_multiple_list(*a, *b);
+			toscan--;
 		}
-		printf("\033[41m la mediane est %d \033[0m\n", mediane);
-		usleep(10000);
-		return (start);
+		return (mediane);
 }
 
-void		quick_sort(a_list **a, a_list **b)
+void		quick_sort(a_list **a, a_list **b, a_list *medianes)
 {
-	a_list **startend;
-
-		printf("\n\033[42m 1 \033[0m\n");
-	startend = quick_push(a, b);
-		printf("\n\033[42m 2 \033[0m\n");
-		if (*startend == NULL)
-		{
-			while (*b != NULL)
-			{
-				px(b, a, "pa");
-				if ((*a)->content > (*a)->next->content)
-					sx(a, "sa");
-			}
-		}
-		else
-		{
-			if (a_listlen(*a) > 2)
-				quick_sort(a, b);
-			while (*b != startend[0])
-			{
-				if (get_position_int(b, startend[0]) > a_listlen(*b)/2)
-					rx(b, "rb");
-				else
-					rrx(b, "rrb");
-			print_multiple_list(*a, *b);
-			}
-			while (*b != startend[1])
-			{
-				px(b, a, "pa");
-				if (!sorted(a))
-				{
-					quick_sort(a, b);
-					break;
-				}
-			}
-		}
-			print_multiple_list(*a, *b);
-	if (!sorted(a) || *b == NULL)
-		quick_sort(a, b);
+	if (medianes->next == NULL && medianes->prev == NULL)
+		medianes->content = quick_pushb(a, b, a_listlen(*a));
+	medianes->next = (a_list *)malloc(sizeof(a_list));
+	medianes->next->next = NULL;
+	medianes->prev = medianes;
+	medianes->content = quick_pushb(a, b, a_listlen(*a));
+	medianes = medianes->next;
+	print_multiple_list(*a, *b);
+	if (a_listlen(*a) > 2)
+		quick_sort(a, b, medianes);
 }
 
 void		sort_insert(a_list **a, a_list **b, int silent)
@@ -433,9 +444,11 @@ void		prepare_sort(a_list **a, a_list **b)
 	int		i;
 
 	i = 0;
-	med = NULL;
-	//sort_insert(a, b, 0);
-	quick_sort(a, b);
+	med = (a_list *)malloc(sizeof(a_list));
+	med->prev = NULL;
+	med->next = NULL;
+	med->content = 0;
+	quick_sort(a, b, &med);
 }
 
 int			main(int argc, char **argv)
