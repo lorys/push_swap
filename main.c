@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/02 19:21:21 by llopez            #+#    #+#             */
-/*   Updated: 2018/07/06 16:50:23 by llopez           ###   ########.fr       */
+/*   Updated: 2018/07/08 04:48:00 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -360,79 +360,84 @@ int			range_len(a_list *a, a_list **startend)
 	return (len);
 }
 
-int			quick_pusha(a_list **a, a_list **b, a_list *medianes)
+void		quick_sort_rev(a_list **a, a_list **b, a_list *medianes)
 {
-		int		mediane;
-		int		nbr_pushed;
+	int mediane;
 
-		mediane = get_mediane(*b, a_listlen(*a));
-		while (get_max(b)->content > mediane)
-		{
-			if ((*b)->content > mediane)
-			{
-				px(b, a, "pa");
 	print_multiple_list(*a, *b);
-			}
-			rrx(a, "rrb");
-		print_multiple_list(*a, *b);
-		}
-		return (mediane);
-}
-
-int			quick_pushb(a_list **a, a_list **b, a_list *medianes)
-{
-		int		mediane;
-		int		nbr_pushed;
-
-		mediane = get_mediane(*a, a_listlen(*a));
-		while (get_minus(a)->content < mediane)
-		{
-			if ((*a)->content < mediane)
-			{
-				px(a, b, "pb");
-	print_multiple_list(*a, *b);
-			}
-			rrx(a, "rra");
-	print_multiple_list(*a, *b);
-		}
-		return (mediane);
-}
-
-void		quick_sort(a_list **a, a_list **b, int toscan)
-{
-	int		mediane;
-	a_list	*tmp;
-	a_list	*bigestundermed;
-
-	mediane = get_mediane(*a, toscan);
-	while (get_minus(a)->content < mediane)
+	mediane = get_mediane(*b, a_listlen(*b));
+	if (medianes == NULL)
 	{
-		tmp = *a;
-		bigestundermed = NULL;
-		while (tmp->next != NULL)
-		{
-			if (bigestundermed == NULL)
-				bigestundermed = get_minus(&tmp);
-			else
-				bigestundermed = (tmp->content < bigestundermed->content && \
-						tmp->content < mediane) ? tmp : \
-								 bigestundermed;
-			tmp = tmp->next;
-		}
-		while (*a != bigestundermed)
-		{
-			if (get_position_int(a, bigestundermed) < a_listlen(*a)/2)
-				rrx(a, "rra");
-			else
-				rx(a, "ra");
-		}
-		if ((*a)->content < mediane && (*a)->content > (*a)->next->content)
-			px(a, b, "pb");
+		medianes = (a_list *)malloc(sizeof(a_list));
+		medianes->prev = NULL;
+		medianes->next = NULL;
+		medianes->content = mediane;
 	}
+	else
+	{
+		medianes->next = (a_list *)malloc(sizeof(a_list));
+		medianes->next->prev = medianes;
+		medianes->next->next = NULL;
+		medianes->next->content = mediane;
+		medianes = medianes->next;
+	}
+	while (get_minus(b)->content < medianes->content)
+	{
+		if ((*b)->content < medianes->content)
+			px(b, a, "pa");
+		else
+			rrx(b, "rrb");
+		print_multiple_list(*a, *b);
+	}
+	if (*b != NULL)
+		quick_sort_rev(a, b, medianes);
 	if (!sorted(a))
-		quick_sort(a, b, a_listlen(*a));
-	while (*b != NULL)
-		px(b, a, "pa");
+		quick_sort(a, b, NULL);
+}
+
+void		quick_sort(a_list **a, a_list **b, a_list *medianes)
+{
+	int mediane;
+
+	print_multiple_list(*a, *b);
+	mediane = get_mediane(*a, a_listlen(*a));
+	if (medianes == NULL)
+	{
+		medianes = (a_list *)malloc(sizeof(a_list));
+		medianes->prev = NULL;
+		medianes->next = NULL;
+		medianes->content = mediane;
+	}
+	else
+	{
+		medianes->next = (a_list *)malloc(sizeof(a_list));
+		medianes->next->prev = medianes;
+		medianes->next->next = NULL;
+		medianes->next->content = mediane;
+		medianes = medianes->next;
+	}
+	while (get_minus(a)->content < medianes->content)
+	{
+		if ((*a)->content < medianes->content)
+			px(a, b, "pb");
+		else
+			rrx(a, "rra");
+		print_multiple_list(*a, *b);
+	}
+	if (a_listlen(*a) > 2)
+		quick_sort(a, b, medianes);
+	while (get_max(b)->content > medianes->content)
+	{
+		if ((*b)->content > medianes->content)
+			px(b, a, "pa");
+		else
+			rrx(b, "rrb");
+		print_multiple_list(*a, *b);
+	}
+	if (medianes->prev == NULL)
+		quick_sort_rev(a, b, NULL);
+	else
+		medianes = medianes->prev;
 }
 
 void		sort_insert(a_list **a, a_list **b, int silent)
@@ -461,7 +466,14 @@ void		sort_insert(a_list **a, a_list **b, int silent)
 
 void		prepare_sort(a_list **a, a_list **b)
 {
-	quick_sort(a, b, a_listlen(*a));
+	while (get_minus(a) != *a)
+	{
+		if (get_position_int(a, get_minus(a)) < a_listlen(*a)/2)
+			rrx(a, "rra");
+		else
+			rx(a, "ra");
+	}
+	quick_sort(a, b, NULL);
 }
 
 int			main(int argc, char **argv)
