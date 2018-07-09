@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/02 19:21:21 by llopez            #+#    #+#             */
-/*   Updated: 2018/07/08 04:48:00 by llopez           ###   ########.fr       */
+/*   Updated: 2018/07/09 10:13:49 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -363,9 +363,11 @@ int			range_len(a_list *a, a_list **startend)
 void		quick_sort_rev(a_list **a, a_list **b, a_list *medianes)
 {
 	int mediane;
+	int toscan;
 
 	print_multiple_list(*a, *b);
 	mediane = get_mediane(*b, a_listlen(*b));
+	toscan = 0;
 	if (medianes == NULL)
 	{
 		medianes = (a_list *)malloc(sizeof(a_list));
@@ -373,7 +375,7 @@ void		quick_sort_rev(a_list **a, a_list **b, a_list *medianes)
 		medianes->next = NULL;
 		medianes->content = mediane;
 	}
-	else
+	else if (a_listlen(*b) > 1)
 	{
 		medianes->next = (a_list *)malloc(sizeof(a_list));
 		medianes->next->prev = medianes;
@@ -384,23 +386,27 @@ void		quick_sort_rev(a_list **a, a_list **b, a_list *medianes)
 	while (get_minus(b)->content < medianes->content)
 	{
 		if ((*b)->content < medianes->content)
+		{
 			px(b, a, "pa");
+			toscan++;
+		}
 		else
 			rrx(b, "rrb");
 		print_multiple_list(*a, *b);
 	}
-	if (*b != NULL)
+	if (*b != NULL && sorted(a))
 		quick_sort_rev(a, b, medianes);
-	if (!sorted(a))
-		quick_sort(a, b, NULL);
+	else
+		quick_sort(a, b, medianes, toscan);
 }
 
-void		quick_sort(a_list **a, a_list **b, a_list *medianes)
+void		quick_sort(a_list **a, a_list **b, a_list *medianes, int toscan)
 {
 	int mediane;
 
 	print_multiple_list(*a, *b);
-	mediane = get_mediane(*a, a_listlen(*a));
+	mediane = get_mediane(*a, toscan);
+	toscan = 0;
 	if (medianes == NULL)
 	{
 		medianes = (a_list *)malloc(sizeof(a_list));
@@ -416,16 +422,19 @@ void		quick_sort(a_list **a, a_list **b, a_list *medianes)
 		medianes->next->content = mediane;
 		medianes = medianes->next;
 	}
-	while (get_minus(a)->content < medianes->content)
+	while ((get_minus(a)->content < medianes->content) || (toscan > 0))
 	{
 		if ((*a)->content < medianes->content)
+		{
 			px(a, b, "pb");
+			toscan--;
+		}
 		else
 			rrx(a, "rra");
 		print_multiple_list(*a, *b);
 	}
 	if (a_listlen(*a) > 2)
-		quick_sort(a, b, medianes);
+		quick_sort(a, b, medianes, toscan);
 	while (get_max(b)->content > medianes->content)
 	{
 		if ((*b)->content > medianes->content)
@@ -473,7 +482,7 @@ void		prepare_sort(a_list **a, a_list **b)
 		else
 			rx(a, "ra");
 	}
-	quick_sort(a, b, NULL);
+	quick_sort(a, b, NULL, a_listlen(*a));
 }
 
 int			main(int argc, char **argv)
