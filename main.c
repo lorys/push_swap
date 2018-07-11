@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/02 19:21:21 by llopez            #+#    #+#             */
-/*   Updated: 2018/07/09 10:13:49 by llopez           ###   ########.fr       */
+/*   Updated: 2018/07/11 22:45:44 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void		print_multiple_list(a_list *a, a_list *b)
 		if (b != NULL)
 			b = b->next;
 	}
-	usleep(100000);
+	usleep(15000);
 }
 
 void		print_list(a_list *a)
@@ -57,27 +57,53 @@ void		print_list(a_list *a)
 void		fill_list(a_list **a, char **data, int size)
 {
 	int		i;
-	a_list	**tmp;
+	int		b;
+	a_list	*tmp;
 
+	tmp = NULL;
 	i = 0;
-	tmp = a;
 	while (i < size)
 	{
-		(*a)->content = ft_atoi(data[i]);
-		if (i+1 < size)
-			(*a)->next = (a_list *)malloc(sizeof(a_list));
-		else
+		b = 0;
+				if (ft_isdigit(data[i][b]) && !ft_strchr(data[i], ' ') && \
+				!ft_strchr(data[i], '\t'))
+		{
+			*a = (a_list *)malloc(sizeof(a_list));
+			(*a)->prev = tmp;
+			if (tmp != NULL)
+				(*a)->prev->next = *a;
 			(*a)->next = NULL;
-		if (i == 0)
-			(*a)->prev = NULL;
-		if (i+1 < size)
-			(*a)->next->prev = (*a);
-		if ((*a)->next != NULL)
-			(*a) = (*a)->next;
+			(*a)->content = ft_atoi(data[i]);
+			tmp = *a;
+			*a = (*a)->next;
+		}
+		else
+		{
+			while (data[i][b])
+			{
+				if (data[i][b] == '\t' || data[i][b] == ' ')
+					b++;
+				else if (ft_isdigit(data[i][b]))
+				{
+					(*a) = (a_list *)malloc(sizeof(a_list));
+					(*a)->prev = tmp;
+					if (tmp != NULL)
+						(*a)->prev->next = *a;
+					(*a)->next = NULL;
+					(*a)->content = ft_atoi(&data[i][b]);
+					tmp = *a;
+					*a = (*a)->next;
+					b += ft_intlen(ft_atoi(&data[i][b]));
+				}
+				else
+					b++;
+			}
+		}
 		i++;
 	}
+	*a = tmp;
 	while ((*a)->prev != NULL)
-		(*a) = (*a)->prev;
+		*a = (*a)->prev;
 }
 
 a_list		*get_minus(a_list **a)
@@ -379,46 +405,26 @@ void		quick_sort_rev(a_list **a, a_list **b)
 		quick_sort_rev(a, b);
 }
 
-void		quick_sort(a_list **a, a_list **b, a_list *medianes)
+void		quick_sort(a_list **a, a_list **b)
 {
 	int mediane;
 
 	mediane = get_mediane(*a, a_listlen(*a));
-	if (medianes == NULL)
-	{
-		medianes = (a_list *)malloc(sizeof(a_list));
-		medianes->prev = NULL;
-		medianes->next = NULL;
-		medianes->content = mediane;
-	}
-	else
-	{
-		medianes->next = (a_list *)malloc(sizeof(a_list));
-		medianes->next->prev = medianes;
-		medianes->next->next = NULL;
-		medianes->next->content = mediane;
-		medianes = medianes->next;
-	}
-	while ((get_minus(a)->content < medianes->content))
+	while ((get_minus(a)->content < mediane))
 	{
 		if (sorted(a) && get_max(a) == lastoflist(a))
 			break;
-		if ((*a)->content < medianes->content)
+		if ((*a)->content < mediane)
 			px(a, b, "pb");
 		else
-		{
-			if (get_position_int(a, get_minus(a)) < a_listlen(*a)/2)
-				rrx(a, "rra");
-			else
-				rx(a, "ra");
-		}
+			rrx(a, "rra");
 	}
 	if (a_listlen(*a) > 2 && !sorted(a))
-		quick_sort(a, b, medianes);
-	if (medianes->prev == NULL)
+		quick_sort(a, b);
+	if (sorted(a) && get_max(a) == lastoflist(a))
 		quick_sort_rev(a, b);
-	else
-		medianes = medianes->prev;
+	else if (a_listlen(*a) <= 2 && (*a)->content > (*a)->next->content)
+		sx(a, "sa");
 }
 
 void		logic_sort(a_list **a, a_list **b)
@@ -426,7 +432,9 @@ void		logic_sort(a_list **a, a_list **b)
 	if ((*a)->content > (*a)->next->content)
 	{
 		px(a, b, "pb");
-		while (((*a)->content < (*b)->content || lastoflist(a)->content > (*b)->content))
+			print_multiple_list(*a, *b);
+		while (((*a)->content < (*b)->content ||\
+					lastoflist(a)->content > (*b)->content))
 		{
 			if (get_minus(a) == *a && get_max(a)->content < (*b)->content)
 				break;
@@ -440,7 +448,6 @@ void		logic_sort(a_list **a, a_list **b)
 		logic_sort(a, b);
 	}
 }
-
 
 void		sort_insert(a_list **a, a_list **b, int silent)
 {
@@ -466,11 +473,9 @@ void		sort_insert(a_list **a, a_list **b, int silent)
 		sort_insert(a, b, silent);
 }
 
-
-
 void		prepare_sort(a_list **a, a_list **b)
 {
-	quick_sort(a, b, NULL);
+	quick_sort(a, b);
 }
 
 int			main(int argc, char **argv)
@@ -478,12 +483,9 @@ int			main(int argc, char **argv)
 	a_list *a;
 	a_list *b;
 
-	a = (a_list *)malloc(sizeof(a_list));
+	a = NULL;
 	b = NULL;
-	if (!ft_strcmp(argv[1], "-I"))
-		fill_list(&a, &argv[2], argc-2);
-	else
-		fill_list(&a, &argv[1], argc-1);
+	fill_list(&a, argv, argc);
 	prepare_sort(&a, &b);
 /*	if (sorted(&a))
 		ft_printf("sorted with success !\n");
