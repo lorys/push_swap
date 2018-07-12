@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 13:02:03 by llopez            #+#    #+#             */
-/*   Updated: 2018/07/12 02:15:09 by llopez           ###   ########.fr       */
+/*   Updated: 2018/07/12 05:26:54 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include <libft.h>
 # include <stdio.h>
 # include "libft/ft_printf.h"
+# include "libft/libft.h"
+# include "libft/get_next_line.h"
 
 typedef struct		arg_list
 {
@@ -33,9 +35,12 @@ void		rrx(a_list **x, char *silent);
 void		rrr(a_list **a, a_list **b, char *silent);
 a_list		*get_minus(a_list **a);
 int			a_listlen(a_list *a);
-int			get_minus_int(a_list **a);
 void		prepare_sort(a_list **a, a_list **b);
 void		sort_insert(a_list **a, a_list **b, int silent);
 void		quick_sort(a_list **a, a_list **b);
+int			sorted(a_list **a);
+void		fill_list(a_list **a, char **data, int size);
+void		print_list(a_list *a);
+void		print_multiple_list(a_list *a, a_list *b);
 
 #endif
