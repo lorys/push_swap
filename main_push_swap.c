@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/02 19:21:21 by llopez            #+#    #+#             */
-/*   Updated: 2018/07/12 05:25:33 by llopez           ###   ########.fr       */
+/*   Updated: 2018/07/12 16:20:15 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,7 +171,7 @@ void		quick_sort(a_list **a, a_list **b)
 		if ((*a)->content < mediane)
 			px(a, b, "pb");
 		else
-			rrx(a, "rra");
+			rx(a, "ra");
 	}
 	if (!sorted(a) && a_listlen(*a) == 2)
 		sx(a, "sa");
