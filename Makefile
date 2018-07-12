@@ -6,11 +6,11 @@
 #    By: llopez <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/09 13:36:27 by llopez            #+#    #+#              #
-#    Updated: 2018/07/10 18:01:11 by llopez           ###   ########.fr        #
+#    Updated: 2018/07/11 23:36:15 by llopez           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 all:
-	gcc main.c src/s.c \
+	gcc -o push_swap main.c src/s.c \
 		src/p.c \
 		src/r.c -I libft/ libft/libft.a -I.

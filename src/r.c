@@ -6,13 +6,13 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 16:34:08 by llopez            #+#    #+#             */
-/*   Updated: 2018/06/18 21:43:12 by llopez           ###   ########.fr       */
+/*   Updated: 2018/07/12 00:43:20 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	rx(a_list **x, char *silent)
+void	rrx(a_list **x, char *silent)
 {
 	a_list *last;
 
@@ -32,13 +32,13 @@ void	rx(a_list **x, char *silent)
 
 void	rr(a_list **a, a_list **b, char *silent)
 {
-	rx(a, (silent[0] != '\0') ? silent : "");
-	rx(b, (silent[0] != '\0') ? silent : "");
+	rx(a, "");
+	rx(b, "");
 	if (silent[0] != '\0')
 		ft_printf("%s\n", silent);
 }
 
-void	rrx(a_list **x, char *silent)
+void	rx(a_list **x, char *silent)
 {
 	a_list *last;
 
@@ -57,8 +57,8 @@ void	rrx(a_list **x, char *silent)
 
 void	rrr(a_list **a, a_list **b, char *silent)
 {
-	rrx(a, (silent[0] != '\0') ? silent : "");
-	rrx(b, (silent[0] != '\0') ? silent : "");
+	rrx(a, "");
+	rrx(b, "");
 	if (silent[0] != '\0')
 		ft_printf("%s\n", silent);
 }

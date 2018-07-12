@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/02 19:21:21 by llopez            #+#    #+#             */
-/*   Updated: 2018/07/11 22:45:44 by llopez           ###   ########.fr       */
+/*   Updated: 2018/07/12 02:48:27 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void		print_multiple_list(a_list *a, a_list *b)
 		if (b != NULL)
 			b = b->next;
 	}
-	usleep(15000);
+	usleep(80000);
 }
 
 void		print_list(a_list *a)
@@ -131,14 +131,11 @@ a_list		*get_max(a_list **a)
 {
 	a_list	*at;
 	a_list	*max;
-	int		length;
 
-	length = 0;
 	at = *a;
 	max = NULL;
 	while (at != NULL)
 	{
-		length++;
 		if (max == NULL)
 			max = at;
 		else if (max->content < at->content)
@@ -298,7 +295,7 @@ int			bigest(a_list *x, a_list *pivot)
 	return (0);
 }
 
-a_list		*sort_list(a_list *a, int i)
+a_list		*sort_list(a_list *a)
 {
 	a_list	*dup;
 	a_list	*prev;
@@ -316,9 +313,6 @@ a_list		*sort_list(a_list *a, int i)
 		if (a->next != NULL)
 			dup = dup->next;
 		a = a->next;
-		i--;
-		if (i == 0)
-			break;
 	}
 	dup->next = NULL;
 	while (dup->prev != NULL)
@@ -327,12 +321,12 @@ a_list		*sort_list(a_list *a, int i)
 	return (dup);
 }
 
-int			get_mediane(a_list *a, int i)
+int			get_mediane(a_list *a)
 {
 	a_list	*sort_lst;
 	a_list	*tmp;
 
-	sort_lst = sort_list(a, i);
+	sort_lst = sort_list(a);
 	tmp = get_maillon(&sort_lst, a_listlen(sort_lst) / 2);
 	return (tmp->content);
 }
@@ -395,11 +389,11 @@ void		quick_sort_rev(a_list **a, a_list **b)
 	while (*b != get_max(b))
 	{
 		if (get_position_int(b, get_max(b)) < a_listlen(*b)/2)
-			rrx(b, "rrb");
-		else
 			rx(b, "rb");
+		else
+			rrx(b, "rrb");
 	}
-	if (*b == get_max(b))
+	if ((*b)->content == get_max(b)->content)
 		px(b, a, "pa");
 	if (*b != NULL)
 		quick_sort_rev(a, b);
@@ -409,44 +403,24 @@ void		quick_sort(a_list **a, a_list **b)
 {
 	int mediane;
 
-	mediane = get_mediane(*a, a_listlen(*a));
+	mediane = get_mediane(*a);
 	while ((get_minus(a)->content < mediane))
 	{
-		if (sorted(a) && get_max(a) == lastoflist(a))
+		if (sorted(a) && get_max(a)->content > get_max(b)->content && \
+				lastoflist(a) == get_max(a) && \
+				(*a)->content > get_max(b)->content)
 			break;
 		if ((*a)->content < mediane)
 			px(a, b, "pb");
 		else
 			rrx(a, "rra");
 	}
+	if (!sorted(a) && a_listlen(*a) == 2)
+		sx(a, "sa");
 	if (a_listlen(*a) > 2 && !sorted(a))
 		quick_sort(a, b);
-	if (sorted(a) && get_max(a) == lastoflist(a))
+	else
 		quick_sort_rev(a, b);
-	else if (a_listlen(*a) <= 2 && (*a)->content > (*a)->next->content)
-		sx(a, "sa");
-}
-
-void		logic_sort(a_list **a, a_list **b)
-{
-	if ((*a)->content > (*a)->next->content)
-	{
-		px(a, b, "pb");
-			print_multiple_list(*a, *b);
-		while (((*a)->content < (*b)->content ||\
-					lastoflist(a)->content > (*b)->content))
-		{
-			if (get_minus(a) == *a && get_max(a)->content < (*b)->content)
-				break;
-			rrx(a, "rra");
-		}
-		px(b, a, "pa");
-	}
-	if (!sorted(a))
-	{
-		rrx(a, "rra");
-		logic_sort(a, b);
-	}
 }
 
 void		sort_insert(a_list **a, a_list **b, int silent)
@@ -459,16 +433,16 @@ void		sort_insert(a_list **a, a_list **b, int silent)
 		min = get_minus(a);
 		po_min = get_minus_int(a);
 		if (*a == min)
-			px(a, b, (silent != 1) ? "pb" : "");
+			px(a, b, "");
 		else
 			if (po_min < a_listlen(*a)/2)
-				rrx(a, (silent != 1) ? "rra" : "");
+				rx(a, "");
 			else
-				rx(a, (silent != 1) ? "ra" : "");
+				rrx(a, "");
 	}
 	if (*a == NULL)
 		while (*b != NULL)
-			px(b, a, (silent != 1) ? "pa" : "");
+			px(b, a, "");
 	else
 		sort_insert(a, b, silent);
 }
@@ -487,10 +461,5 @@ int			main(int argc, char **argv)
 	b = NULL;
 	fill_list(&a, argv, argc);
 	prepare_sort(&a, &b);
-/*	if (sorted(&a))
-		ft_printf("sorted with success !\n");
-	else
-		ft_printf("not sorted\n");
-	print_multiple_list(a, b);*/
 	return (0);
 }
