@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/02 19:21:21 by llopez            #+#    #+#             */
-/*   Updated: 2018/07/14 19:38:51 by llopez           ###   ########.fr       */
+/*   Updated: 2018/07/14 20:02:21 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,6 +206,8 @@ int			main(int argc, char **argv)
 
 	a = NULL;
 	b = NULL;
+	if (argc == 1)
+		return (0);
 	if (!good_params(argv, argc, 0))
 	{
 		write(2, "Error\n", 6);
