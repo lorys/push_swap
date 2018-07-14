@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 13:02:03 by llopez            #+#    #+#             */
-/*   Updated: 2018/07/12 05:26:54 by llopez           ###   ########.fr       */
+/*   Updated: 2018/07/14 19:39:24 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # include <unistd.h>
 # include <libft.h>
 # include <stdio.h>
+# include <limits.h>
 # include "libft/ft_printf.h"
 # include "libft/libft.h"
 # include "libft/get_next_line.h"
@@ -39,8 +40,13 @@ void		prepare_sort(a_list **a, a_list **b);
 void		sort_insert(a_list **a, a_list **b, int silent);
 void		quick_sort(a_list **a, a_list **b);
 int			sorted(a_list **a);
-void		fill_list(a_list **a, char **data, int size);
+void		fill_list(a_list **a, char **data, int size, int bonus);
 void		print_list(a_list *a);
 void		print_multiple_list(a_list *a, a_list *b);
+int			good_params(char **data, int argc, int checker);
+int			valid_op(a_list *a);
+int			valid_int(char *str);
+int			sorted(a_list **a);
+int			ft_nbrnbr(char *str);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/02 19:21:21 by llopez            #+#    #+#             */
-/*   Updated: 2018/07/12 16:20:15 by llopez           ###   ########.fr       */
+/*   Updated: 2018/07/14 19:38:51 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,19 +66,6 @@ int		get_position_int(a_list **x, a_list *y)
 		tmp = tmp->next;
 	}
 	return (-1);
-}
-
-int			a_listlen(a_list *a)
-{
-	int	length;
-
-	length = 0;
-	while (a != NULL)
-	{
-		a = a->next;
-		length++;
-	}
-	return (length);
 }
 
 a_list		*lastoflist(a_list **x)
@@ -164,6 +151,8 @@ void		quick_sort(a_list **a, a_list **b)
 	mediane = get_mediane(*a);
 	while (get_minus(a)->content < mediane)
 	{
+		if (sorted(a) && *b == NULL)
+			return;
 		if (sorted(a) && get_max(a)->content > get_max(b)->content && \
 				lastoflist(a) == get_max(a) && \
 				(*a)->content > get_max(b)->content)
@@ -217,7 +206,21 @@ int			main(int argc, char **argv)
 
 	a = NULL;
 	b = NULL;
-	fill_list(&a, argv, argc);
+	if (!good_params(argv, argc, 0))
+	{
+		write(2, "Error\n", 6);
+		exit(0);
+	}
+	if (argc == 2 && ft_nbrnbr(argv[1]) < 2)
+		return (0);
+	fill_list(&a, argv, argc, 0);
+	if (!valid_op(a))
+	{
+		write(2, "Error\n", 6);
+		exit(0);
+	}
+	if (sorted(&a) || a_listlen(a) <= 1)
+		return (0);
 	prepare_sort(&a, &b);
 	return (0);
 }
