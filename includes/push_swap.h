@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 13:02:03 by llopez            #+#    #+#             */
-/*   Updated: 2018/07/16 19:43:09 by llopez           ###   ########.fr       */
+/*   Updated: 2018/07/16 20:00:42 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,5 +58,6 @@ void		sort_logic(a_list **a, a_list **b);
 a_list		*lastoflist(a_list **x);
 int			get_position_int(a_list **x, a_list *y);
 void		handle_errors(void);
+void		free_list(a_list **lst);
 
 #endif

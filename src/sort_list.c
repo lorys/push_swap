@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/16 19:15:08 by llopez            #+#    #+#             */
-/*   Updated: 2018/07/16 19:15:36 by llopez           ###   ########.fr       */
+/*   Updated: 2018/07/16 20:28:06 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,7 @@ a_list		*sort_list(a_list *a)
 		dup->next = (a->next == NULL) ? NULL : tmp;
 		if (a->next != NULL)
 			dup->next->prev = dup;
-		if (a->next != NULL)
-			dup = dup->next;
+		dup = (a->next != NULL) ? dup->next : dup;
 		a = a->next;
 	}
 	dup->next = NULL;

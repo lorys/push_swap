@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/16 19:13:19 by llopez            #+#    #+#             */
-/*   Updated: 2018/07/16 19:13:55 by llopez           ###   ########.fr       */
+/*   Updated: 2018/07/16 19:53:32 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int		get_position_int(a_list **x, a_list *y)
 	while (tmp != NULL)
 	{
 		if (tmp == y)
-			return(i);
+			return (i);
 		i++;
 		tmp = tmp->next;
 	}

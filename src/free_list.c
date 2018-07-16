@@ -1,24 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_mediane.c                                      :+:      :+:    :+:   */
+/*   free_list.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/07/16 19:15:43 by llopez            #+#    #+#             */
-/*   Updated: 2018/07/16 20:28:09 by llopez           ###   ########.fr       */
+/*   Created: 2018/07/16 19:57:51 by llopez            #+#    #+#             */
+/*   Updated: 2018/07/16 20:28:08 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-int			get_mediane(a_list *a)
+void		free_list(a_list **lst)
 {
-	a_list	*sort_lst;
-	int		tmp;
+	a_list	*tmp;
 
-	sort_lst = sort_list(a);
-	tmp = get_maillon(&sort_lst, a_listlen(sort_lst) / 2)->content;
-	free_list(&sort_lst);
-	return (tmp);
+	if ((*lst)->next != NULL)
+	{
+		tmp = (*lst)->next;
+		free(*lst);
+		free_list(&tmp);
+	}
 }

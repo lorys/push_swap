@@ -6,7 +6,7 @@
 #    By: llopez <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/09 13:36:27 by llopez            #+#    #+#              #
-#    Updated: 2018/07/16 19:36:11 by llopez           ###   ########.fr        #
+#    Updated: 2018/07/16 20:27:55 by llopez           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,8 @@ SRC_GLOBAL = src/p.c \
 	  src/sort_logic.c \
 	  src/sorted.c \
 	  src/valid_int.c \
-	  src/valid_op.c
+	  src/valid_op.c \
+	  src/free_list.c
 
 SRC_BIN_NAME_1 = main_push_swap.c
 

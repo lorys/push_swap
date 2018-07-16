@@ -6,11 +6,51 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/16 19:30:40 by llopez            #+#    #+#             */
-/*   Updated: 2018/07/16 19:30:59 by llopez           ###   ########.fr       */
+/*   Updated: 2018/07/16 21:51:15 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+
+void		fill_list_partone(char *data, int *b, a_list **a, \
+		a_list **tmp)
+{
+	while (data[*b])
+	{
+		if (data[*b] == '\t' || data[*b] == ' ')
+			(*b)++;
+		else if ((ft_isdigit(data[*b]) || data[*b] == '-') && \
+				valid_int(&(data[*b])))
+		{
+			if (!(*a = (a_list *)malloc(sizeof(a_list))))
+				exit(0);
+			(*a)->prev = *tmp;
+			if (*tmp != NULL)
+				(*a)->prev->next = *a;
+			(*a)->next = NULL;
+			(*a)->content = ft_atoi(&data[*b]);
+			*tmp = *a;
+			*a = (*a)->next;
+			(*b) += (data[*b] == '-') ? 1 : 0;
+			(*b) += ft_intlen(ft_atoi(&data[*b]));
+		}
+		else
+			(*b)++;
+	}
+}
+
+void		fill_list_parttwo(a_list **a, int *i, char **data, a_list **tmp)
+{
+	if (!(*a = (a_list *)malloc(sizeof(a_list))))
+		exit(0);
+	(*a)->prev = *tmp;
+	if (*tmp != NULL)
+		(*a)->prev->next = *a;
+	(*a)->next = NULL;
+	(*a)->content = ft_atoi(data[*i]);
+	*tmp = *a;
+	*a = (*a)->next;
+}
 
 void		fill_list(a_list **a, char **data, int size, int checker)
 {
@@ -28,40 +68,9 @@ void		fill_list(a_list **a, char **data, int size, int checker)
 		if ((ft_isdigit(data[i][b]) || data[i][b] == '-') && \
 				!ft_strchr(data[i], ' ') && !ft_strchr(data[i], '\t') \
 				&& valid_int(&data[i][b]))
-		{
-			*a = (a_list *)malloc(sizeof(a_list));
-			(*a)->prev = tmp;
-			if (tmp != NULL)
-				(*a)->prev->next = *a;
-			(*a)->next = NULL;
-			(*a)->content = ft_atoi(data[i]);
-			tmp = *a;
-			*a = (*a)->next;
-		}
+			fill_list_parttwo(a, &i, data, &tmp);
 		else
-		{
-			while (data[i][b])
-			{
-				if (data[i][b] == '\t' || data[i][b] == ' ')
-					b++;
-				else if ((ft_isdigit(data[i][b]) || data[i][b] == '-') && \
-						valid_int(&data[i][b]))
-				{
-					(*a) = (a_list *)malloc(sizeof(a_list));
-					(*a)->prev = tmp;
-					if (tmp != NULL)
-						(*a)->prev->next = *a;
-					(*a)->next = NULL;
-					(*a)->content = ft_atoi(&data[i][b]);
-					tmp = *a;
-					*a = (*a)->next;
-					b += (data[i][b] == '-') ? 1 : 0 ;
-					b += ft_intlen(ft_atoi(&data[i][b]));
-				}
-				else
-					b++;
-			}
-		}
+			fill_list_partone(data[i], &b, a, &tmp);
 		i++;
 	}
 	*a = tmp;

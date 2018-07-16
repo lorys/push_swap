@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/16 19:28:51 by llopez            #+#    #+#             */
-/*   Updated: 2018/07/16 19:29:05 by llopez           ###   ########.fr       */
+/*   Updated: 2018/07/16 19:54:18 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,7 @@ int		good_params(char **data, int argc, int checker)
 
 	i = 1;
 	(void)b;
-	if (checker && argc == 2 && ft_nbrnbr(data[1]) == 0)
-		return (0);
-	if (argc < 2)
+	if ((checker && argc == 2 && ft_nbrnbr(data[1]) == 0) || argc < 2)
 		return (0);
 	if (!strcmp(data[i], "-v") && checker)
 		i++;

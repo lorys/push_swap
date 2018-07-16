@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/16 19:30:16 by llopez            #+#    #+#             */
-/*   Updated: 2018/07/16 19:30:31 by llopez           ###   ########.fr       */
+/*   Updated: 2018/07/16 20:22:37 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 int			valid_int(char *str)
 {
 	int		i;
-	char	*intmax;
-	char	*intmin;
+	char	intmax[13];
+	char	intmin[13];
 
-	intmax = ft_strdup("2147483647");
-	intmin = ft_strdup("–2147483648");
+	ft_strcpy(&intmax[0], "2147483647");
+	ft_strcpy(&intmin[0], "–2147483648");
 	i = 0;
 	while (str[i] && (ft_isdigit(str[i]) || str[i] == '-'))
 		i++;
