@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/12 05:09:18 by llopez            #+#    #+#             */
-/*   Updated: 2018/07/14 19:54:08 by llopez           ###   ########.fr       */
+/*   Updated: 2018/07/16 13:09:32 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int		good_params(char **data, int argc, int checker)
 				return (0);
 			b++;
 		}
-		if (ft_strlen(data[i]) != b)
+		if ((int)ft_strlen(data[i]) != b)
 			return (0);
 		i++;
 	}
@@ -193,6 +193,7 @@ void		fill_list(a_list **a, char **data, int size, int checker)
 					(*a)->content = ft_atoi(&data[i][b]);
 					tmp = *a;
 					*a = (*a)->next;
+					b += (data[i][b] == '-') ? 1 : 0 ;
 					b += ft_intlen(ft_atoi(&data[i][b]));
 				}
 				else

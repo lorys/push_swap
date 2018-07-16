@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/12 05:07:50 by llopez            #+#    #+#             */
-/*   Updated: 2018/07/14 19:45:36 by llopez           ###   ########.fr       */
+/*   Updated: 2018/07/16 13:59:37 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	listen(a_list **a, a_list **b, int bonus)
 			px(a, b, "");
 		else
 		{
+			printf("line : %s\n", line);
 			write(2, "Error\n", 6);
 			exit(0);
 		}
@@ -63,7 +64,7 @@ int		main(int argc, char **argv)
 	b = NULL;
 	if (!good_params(argv, argc, 1))
 	{
-		write(2, "Error\n", 6);
+		write(2, "Error\n", 7);
 		exit(0);
 	}
 	if (ft_nbrnbr(argv[1 + bonus]) > 1)
@@ -71,7 +72,7 @@ int		main(int argc, char **argv)
 		fill_list(&a, argv, argc, 1);
 		if (!valid_op(a))
 		{
-			write(2, "Error\n", 6);
+			write(2, "Error\n", 7);
 			exit(0);
 		}
 		listen(&a, &b, bonus);

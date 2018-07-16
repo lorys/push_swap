@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/02 19:21:21 by llopez            #+#    #+#             */
-/*   Updated: 2018/07/14 20:02:21 by llopez           ###   ########.fr       */
+/*   Updated: 2018/07/16 13:28:34 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,6 @@ a_list		*get_maillon(a_list **lst, int i)
 a_list		*sort_list(a_list *a)
 {
 	a_list	*dup;
-	a_list	*prev;
 	a_list	*list_b;
 
 	dup = (a_list *)malloc(sizeof(a_list));
@@ -210,7 +209,7 @@ int			main(int argc, char **argv)
 		return (0);
 	if (!good_params(argv, argc, 0))
 	{
-		write(2, "Error\n", 6);
+		write(2, "Error1\n", 7);
 		exit(0);
 	}
 	if (argc == 2 && ft_nbrnbr(argv[1]) < 2)
@@ -218,7 +217,7 @@ int			main(int argc, char **argv)
 	fill_list(&a, argv, argc, 0);
 	if (!valid_op(a))
 	{
-		write(2, "Error\n", 6);
+		write(2, "Error2\n", 7);
 		exit(0);
 	}
 	if (sorted(&a) || a_listlen(a) <= 1)
