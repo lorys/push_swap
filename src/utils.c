@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/12 05:09:18 by llopez            #+#    #+#             */
-/*   Updated: 2018/07/16 13:09:32 by llopez           ###   ########.fr       */
+/*   Updated: 2018/07/16 18:45:41 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,6 @@ void		print_multiple_list(a_list *a, a_list *b)
 		if (b != NULL)
 			b = b->next;
 	}
-	usleep(80000);
 }
 
 void		print_list(a_list *a)
