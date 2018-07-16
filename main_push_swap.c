@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/02 19:21:21 by llopez            #+#    #+#             */
-/*   Updated: 2018/07/16 13:28:34 by llopez           ###   ########.fr       */
+/*   Updated: 2018/07/16 16:11:36 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,9 +193,27 @@ void		sort_insert(a_list **a, a_list **b, int silent)
 		sort_insert(a, b, silent);
 }
 
+void		sort_logic(a_list **a, a_list **b)
+{
+	if ((*a)->content > (*a)->next->content)
+		sx(a, "sa");
+	while (!sorted(a) && *a != get_minus(a))
+		if (get_position_int(a, get_minus(a)) < a_listlen(*a)/2)
+			rx(a, "ra");
+		else
+			rrx(a, "rra");
+	if (sorted(a) && *b == NULL)
+		return;
+	rrx(a, "rra");
+	sort_logic(a, b);
+}
+
 void		prepare_sort(a_list **a, a_list **b)
 {
-	quick_sort(a, b);
+	if (a_listlen(*a) > 3)
+		quick_sort(a, b);
+	else
+		sort_logic(a, b);
 }
 
 int			main(int argc, char **argv)

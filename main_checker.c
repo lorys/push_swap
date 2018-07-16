@@ -6,20 +6,26 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/12 05:07:50 by llopez            #+#    #+#             */
-/*   Updated: 2018/07/16 13:59:37 by llopez           ###   ########.fr       */
+/*   Updated: 2018/07/16 16:31:43 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 void	listen(a_list **a, a_list **b, int bonus)
 {
 	char	*line;
+	int		op;
 
+	op = 0;
 	if (bonus)
 		print_multiple_list(*a, *b);
 	while (get_next_line(0, &line))
 	{
+		op++;
 		if (!ft_strcmp(line, "sa"))
 			sx(a, "");
 		else if (!ft_strcmp(line, "sb"))
@@ -44,9 +50,8 @@ void	listen(a_list **a, a_list **b, int bonus)
 			px(a, b, "");
 		else
 		{
-			printf("line : %s\n", line);
-			write(2, "Error\n", 6);
-			exit(0);
+			printf("line : [%s]\n", line);
+			write(2, "Error1\n", 7);
 		}
 		if (bonus)
 			print_multiple_list(*a, *b);
