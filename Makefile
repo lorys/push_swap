@@ -6,7 +6,7 @@
 #    By: llopez <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/09 13:36:27 by llopez            #+#    #+#              #
-#    Updated: 2018/07/16 11:59:13 by llopez           ###   ########.fr        #
+#    Updated: 2018/07/16 18:09:27 by llopez           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,27 +24,45 @@ SRC_BIN_NAME_1 = main_push_swap.c
 
 SRC_BIN_NAME_2 = main_checker.c
 
-INCLUDES = -I libft/ libft/libft.a -I libft/get_next_line.h -I .
+INCLUDES = -Iincludes
 
 FLAGS = -Wall -Werror -Wextra
 
-all:
-	@printf "\033[31;1m Making LIBFT \033[0m\n"
-	@make -C ./libft/
-	@printf "\033[32;1m LIBFT made \033[0m\n"
+OBJDIR = obj/
+
+OBJ = $(patsubst %.c, %.o, $(addprefix $(OBJDIR), $(notdir $(SRC_GLOBAL))))
+
+LIBFT = libft/libft.a
+
+all: $(BIN_NAME_1) $(BIN_NAME_2)
+
+$(OBJDIR)%.o: src/%.c includes/push_swap.h
+	@mkdir -p $(OBJDIR)
+	@printf "\033[33m $@ \033[0m\n"
+	@$(CC) -o $@ -c $< $(INCLUDES) $(FLAGS)
+
+$(BIN_NAME_1): $(LIBFT) $(OBJ) $(SRC_BIN_NAME_1)
 	@printf "\033[31;1m Compiling $(BIN_NAME_1) \033[0m\n"
-	@$(CC) -o $(BIN_NAME_2) $(FLAGS) $(SRC_GLOBAL) $(SRC_BIN_NAME_2) $(INCLUDES)
+	@$(CC) -o $(BIN_NAME_1) $(FLAGS) $(OBJ) $(SRC_BIN_NAME_1) $(INCLUDES) $(LIBFT)
 	@printf "\033[32;1m Compiled $(BIN_NAME_1) ! \033[0m\n"
+
+$(BIN_NAME_2): $(LIBFT) $(OBJ) $(SRC_BIN_NAME_2)
 	@printf "\033[31;1m Compiling $(BIN_NAME_2) \033[0m\n"
-	@$(CC) -o $(BIN_NAME_1) $(FLAGS) $(SRC_GLOBAL) $(SRC_BIN_NAME_1) $(INCLUDES)
-	@printf "\033[32;1m Compiled $(BIN_NAME_1) ! \033[0m\n"
+	@$(CC) -o $(BIN_NAME_2) $(FLAGS) $(OBJ) $(SRC_BIN_NAME_2) $(INCLUDES) $(LIBFT)
+	@printf "\033[32;1m Compiled $(BIN_NAME_2) ! \033[0m\n"
+
+$(LIBFT):
+	@printf "\033[31;1m Making LIBFT \033[0m\n"
+	@make -C libft/
+	@printf "\033[32;1m LIBFT made \033[0m\n"
 
 clean:
 	@printf "\033[41m Cleaned ! \033[0m\n"
 
 fclean:
+	make -C libft/ fclean
 	@printf "\n\033[41m Cleaning... \033[0m\n"
-	@rm -rf push_swap checker
+	@rm -rf obj/ push_swap checker
 	@printf "\n\033[42m Cleaned ! \033[0m\n"
 
 re: fclean all
