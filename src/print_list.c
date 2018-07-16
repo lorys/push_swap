@@ -1,34 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   s.c                                                :+:      :+:    :+:   */
+/*   print_list.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/05/09 16:04:58 by llopez            #+#    #+#             */
-/*   Updated: 2018/07/16 19:22:10 by llopez           ###   ########.fr       */
+/*   Created: 2018/07/16 19:29:51 by llopez            #+#    #+#             */
+/*   Updated: 2018/07/16 19:30:08 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void		sx(a_list **x, char *silent)
+void		print_list(a_list *a)
 {
-	int		tmp;
-
-	if (*x == NULL || (*x)->next == NULL)
-		return ;
-	tmp = (*x)->content;
-	(*x)->content = (*x)->next->content;
-	(*x)->next->content = tmp;
-	if (silent[0] != '\0')
-		ft_printf("%s\n", silent);
-}
-
-void		ss(a_list **a, a_list **b, char *silent)
-{
-	sx(a, (silent[0] != '\0') ? silent : "");
-	sx(b, (silent[0] != '\0') ? silent : "");
-	if (silent[0] != '\0')
-		ft_printf("%s\n", silent);
+	if (a == NULL)
+		printf("(null)\n");
+	while (a != NULL)
+	{
+		ft_printf("addr %p\n", a);
+		ft_printf("%d\n", a->content);
+		ft_printf("next = %p\n", a->next);
+		ft_printf("prev = %p\n", a->prev);
+		a = a->next;
+	}
 }

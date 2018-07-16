@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 16:34:08 by llopez            #+#    #+#             */
-/*   Updated: 2018/07/12 00:43:20 by llopez           ###   ########.fr       */
+/*   Updated: 2018/07/16 19:24:17 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	rrx(a_list **x, char *silent)
 	a_list *last;
 
 	if (*x == NULL || ((*x)->prev == NULL && (*x)->next == NULL))
-		return;
+		return ;
 	last = *x;
 	while (last->next != NULL)
 		last = last->next;
@@ -43,7 +43,7 @@ void	rx(a_list **x, char *silent)
 	a_list *last;
 
 	if (*x == NULL || ((*x)->next == NULL && (*x)->prev == NULL))
-		return;
+		return ;
 	last = *x;
 	while (last->next != NULL)
 		last = last->next;

@@ -1,34 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   s.c                                                :+:      :+:    :+:   */
+/*   a_listlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/05/09 16:04:58 by llopez            #+#    #+#             */
-/*   Updated: 2018/07/16 19:22:10 by llopez           ###   ########.fr       */
+/*   Created: 2018/07/16 19:31:22 by llopez            #+#    #+#             */
+/*   Updated: 2018/07/16 19:31:42 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void		sx(a_list **x, char *silent)
+int			a_listlen(a_list *a)
 {
-	int		tmp;
+	int	length;
 
-	if (*x == NULL || (*x)->next == NULL)
-		return ;
-	tmp = (*x)->content;
-	(*x)->content = (*x)->next->content;
-	(*x)->next->content = tmp;
-	if (silent[0] != '\0')
-		ft_printf("%s\n", silent);
-}
-
-void		ss(a_list **a, a_list **b, char *silent)
-{
-	sx(a, (silent[0] != '\0') ? silent : "");
-	sx(b, (silent[0] != '\0') ? silent : "");
-	if (silent[0] != '\0')
-		ft_printf("%s\n", silent);
+	length = 0;
+	while (a != NULL)
+	{
+		a = a->next;
+		length++;
+	}
+	return (length);
 }

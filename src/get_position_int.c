@@ -1,34 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   s.c                                                :+:      :+:    :+:   */
+/*   get_position_int.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/05/09 16:04:58 by llopez            #+#    #+#             */
-/*   Updated: 2018/07/16 19:22:10 by llopez           ###   ########.fr       */
+/*   Created: 2018/07/16 19:13:19 by llopez            #+#    #+#             */
+/*   Updated: 2018/07/16 19:13:55 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void		sx(a_list **x, char *silent)
+int		get_position_int(a_list **x, a_list *y)
 {
-	int		tmp;
+	int		i;
+	a_list	*tmp;
 
-	if (*x == NULL || (*x)->next == NULL)
-		return ;
-	tmp = (*x)->content;
-	(*x)->content = (*x)->next->content;
-	(*x)->next->content = tmp;
-	if (silent[0] != '\0')
-		ft_printf("%s\n", silent);
-}
-
-void		ss(a_list **a, a_list **b, char *silent)
-{
-	sx(a, (silent[0] != '\0') ? silent : "");
-	sx(b, (silent[0] != '\0') ? silent : "");
-	if (silent[0] != '\0')
-		ft_printf("%s\n", silent);
+	tmp = *x;
+	i = 0;
+	while (tmp != NULL)
+	{
+		if (tmp == y)
+			return(i);
+		i++;
+		tmp = tmp->next;
+	}
+	return (-1);
 }

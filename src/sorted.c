@@ -1,34 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   s.c                                                :+:      :+:    :+:   */
+/*   sorted.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/05/09 16:04:58 by llopez            #+#    #+#             */
-/*   Updated: 2018/07/16 19:22:10 by llopez           ###   ########.fr       */
+/*   Created: 2018/07/16 19:32:23 by llopez            #+#    #+#             */
+/*   Updated: 2018/07/16 19:32:40 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void		sx(a_list **x, char *silent)
+int			sorted(a_list **a)
 {
-	int		tmp;
+	a_list *tmp;
 
-	if (*x == NULL || (*x)->next == NULL)
-		return ;
-	tmp = (*x)->content;
-	(*x)->content = (*x)->next->content;
-	(*x)->next->content = tmp;
-	if (silent[0] != '\0')
-		ft_printf("%s\n", silent);
-}
-
-void		ss(a_list **a, a_list **b, char *silent)
-{
-	sx(a, (silent[0] != '\0') ? silent : "");
-	sx(b, (silent[0] != '\0') ? silent : "");
-	if (silent[0] != '\0')
-		ft_printf("%s\n", silent);
+	tmp = *a;
+	if (a_listlen(tmp) == 1)
+		return (1);
+	while (tmp != NULL)
+	{
+		if (tmp->next != NULL && tmp->content > tmp->next->content)
+			return (0);
+		else if (tmp->next == NULL && tmp->content < tmp->prev->content)
+			return (0);
+			
+		tmp = tmp->next;
+	}
+	return (1);
 }

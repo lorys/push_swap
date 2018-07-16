@@ -1,34 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   s.c                                                :+:      :+:    :+:   */
+/*   get_maillon.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/05/09 16:04:58 by llopez            #+#    #+#             */
-/*   Updated: 2018/07/16 19:22:10 by llopez           ###   ########.fr       */
+/*   Created: 2018/07/16 19:14:31 by llopez            #+#    #+#             */
+/*   Updated: 2018/07/16 19:20:56 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void		sx(a_list **x, char *silent)
+a_list		*get_maillon(a_list **lst, int i)
 {
-	int		tmp;
+	a_list *a;
 
-	if (*x == NULL || (*x)->next == NULL)
-		return ;
-	tmp = (*x)->content;
-	(*x)->content = (*x)->next->content;
-	(*x)->next->content = tmp;
-	if (silent[0] != '\0')
-		ft_printf("%s\n", silent);
-}
-
-void		ss(a_list **a, a_list **b, char *silent)
-{
-	sx(a, (silent[0] != '\0') ? silent : "");
-	sx(b, (silent[0] != '\0') ? silent : "");
-	if (silent[0] != '\0')
-		ft_printf("%s\n", silent);
+	a = *lst;
+	while (a->next != NULL && i > 0)
+	{
+		a = a->next;
+		i--;
+	}
+	return (a);
 }

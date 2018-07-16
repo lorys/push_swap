@@ -1,34 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   s.c                                                :+:      :+:    :+:   */
+/*   sort_logic.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/05/09 16:04:58 by llopez            #+#    #+#             */
-/*   Updated: 2018/07/16 19:22:10 by llopez           ###   ########.fr       */
+/*   Created: 2018/07/16 19:17:19 by llopez            #+#    #+#             */
+/*   Updated: 2018/07/16 19:22:51 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void		sx(a_list **x, char *silent)
+void		sort_logic(a_list **a, a_list **b)
 {
-	int		tmp;
-
-	if (*x == NULL || (*x)->next == NULL)
+	if ((*a)->content > (*a)->next->content)
+		sx(a, "sa");
+	while (!sorted(a) && *a != get_minus(a))
+		if (get_position_int(a, get_minus(a)) < a_listlen(*a) / 2)
+			rx(a, "ra");
+		else
+			rrx(a, "rra");
+	if (sorted(a) && *b == NULL)
 		return ;
-	tmp = (*x)->content;
-	(*x)->content = (*x)->next->content;
-	(*x)->next->content = tmp;
-	if (silent[0] != '\0')
-		ft_printf("%s\n", silent);
-}
-
-void		ss(a_list **a, a_list **b, char *silent)
-{
-	sx(a, (silent[0] != '\0') ? silent : "");
-	sx(b, (silent[0] != '\0') ? silent : "");
-	if (silent[0] != '\0')
-		ft_printf("%s\n", silent);
+	rrx(a, "rra");
+	sort_logic(a, b);
 }

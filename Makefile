@@ -6,7 +6,7 @@
 #    By: llopez <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/09 13:36:27 by llopez            #+#    #+#              #
-#    Updated: 2018/07/16 18:09:27 by llopez           ###   ########.fr        #
+#    Updated: 2018/07/16 19:36:11 by llopez           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,27 @@ CC = gcc
 SRC_GLOBAL = src/p.c \
 	  src/r.c \
 	  src/s.c \
-	  src/utils.c \
+	  src/a_listlen.c \
+	  src/errors.c \
+	  src/fill_list.c \
+	  src/ft_nbrnbr.c \
+	  src/get_maillon.c \
+	  src/get_max.c \
+	  src/get_minus.c \
+	  src/get_mediane.c \
+	  src/get_position_int.c \
+	  src/good_params.c \
+	  src/lastoflist.c \
+	  src/prepare_sort.c \
+	  src/print_list.c \
+	  src/print_multiple_list.c \
+	  src/quick_sort.c \
+	  src/sort_insert.c \
+	  src/sort_list.c \
+	  src/sort_logic.c \
+	  src/sorted.c \
+	  src/valid_int.c \
+	  src/valid_op.c
 
 SRC_BIN_NAME_1 = main_push_swap.c
 

@@ -1,39 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   p.c                                                :+:      :+:    :+:   */
+/*   valid_int.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/05/09 16:15:10 by llopez            #+#    #+#             */
-/*   Updated: 2018/07/16 19:48:10 by llopez           ###   ########.fr       */
+/*   Created: 2018/07/16 19:30:16 by llopez            #+#    #+#             */
+/*   Updated: 2018/07/16 19:30:31 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	px(a_list **from, a_list **to, char *silent)
+int			valid_int(char *str)
 {
-	a_list *tmp;
+	int		i;
+	char	*intmax;
+	char	*intmin;
 
-	if (*from == NULL)
-		return ;
-	tmp = (*from)->next;
-	if (*to == NULL)
+	intmax = ft_strdup("2147483647");
+	intmin = ft_strdup("–2147483648");
+	i = 0;
+	while (str[i] && (ft_isdigit(str[i]) || str[i] == '-'))
+		i++;
+	if (i > 11)
+		return (0);
+	else if (i == 10 || i == 11)
 	{
-		*to = *from;
-		(*to)->next = NULL;
-		(*to)->prev = NULL;
-		(*from) = tmp;
+		i = 0;
+		if (str[i] == '-')
+			i++;
+		while (str[i] && (ft_isdigit(str[i]) || str[i] == '-'))
+		{
+			if (str[i] > intmax[i])
+				return (0);
+			i++;
+		}
 	}
-	else
-	{
-		(*to)->prev = *from;
-		(*to)->prev->next = (*to);
-		(*to)->prev->prev = NULL;
-		*to = (*to)->prev;
-		*from = tmp;
-	}
-	if (silent[0] != '\0')
-		ft_printf("%s\n", silent);
+	return (1);
 }
