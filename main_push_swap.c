@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/02 19:21:21 by llopez            #+#    #+#             */
-/*   Updated: 2018/07/16 20:23:42 by llopez           ###   ########.fr       */
+/*   Updated: 2018/07/16 23:29:55 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,6 @@ int			main(int argc, char **argv)
 	if (sorted(&a) || a_listlen(a) <= 1)
 		return (0);
 	prepare_sort(&a, &b);
-	free_list(&a);
+	free_list(a);
 	return (0);
 }

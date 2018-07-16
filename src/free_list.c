@@ -6,20 +6,20 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/16 19:57:51 by llopez            #+#    #+#             */
-/*   Updated: 2018/07/16 20:28:08 by llopez           ###   ########.fr       */
+/*   Updated: 2018/07/16 23:39:56 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void		free_list(a_list **lst)
+void		free_list(a_list *lst)
 {
 	a_list	*tmp;
 
-	if ((*lst)->next != NULL)
+	if (lst != NULL)
 	{
-		tmp = (*lst)->next;
-		free(*lst);
-		free_list(&tmp);
+		tmp = lst->next;
+		free(lst);
+		free_list(tmp);
 	}
 }
