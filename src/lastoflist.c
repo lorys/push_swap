@@ -12,9 +12,9 @@
 
 #include "push_swap.h"
 
-a_list		*lastoflist(a_list **x)
+t_lst		*lastoflist(t_lst **x)
 {
-	a_list *tmp;
+	t_lst *tmp;
 
 	tmp = *x;
 	if (*x == NULL)

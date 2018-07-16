@@ -12,7 +12,7 @@
 
 #include "push_swap.h"
 
-void		sx(a_list **x, char *silent)
+void		sx(t_lst **x, char *silent)
 {
 	int		tmp;
 
@@ -25,7 +25,7 @@ void		sx(a_list **x, char *silent)
 		ft_printf("%s\n", silent);
 }
 
-void		ss(a_list **a, a_list **b, char *silent)
+void		ss(t_lst **a, t_lst **b, char *silent)
 {
 	sx(a, (silent[0] != '\0') ? silent : "");
 	sx(b, (silent[0] != '\0') ? silent : "");

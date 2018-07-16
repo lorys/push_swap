@@ -12,7 +12,7 @@
 
 #include "push_swap.h"
 
-void	listen_part(a_list **a, a_list **b, char *line)
+void	listen_part(t_lst **a, t_lst **b, char *line)
 {
 	if (!ft_strcmp(line, "rr"))
 		rr(a, b, "");
@@ -30,7 +30,7 @@ void	listen_part(a_list **a, a_list **b, char *line)
 		handle_errors();
 }
 
-void	listen(a_list **a, a_list **b, int bonus)
+void	listen(t_lst **a, t_lst **b, int bonus)
 {
 	char	*line;
 
@@ -58,8 +58,8 @@ void	listen(a_list **a, a_list **b, int bonus)
 
 int		main(int argc, char **argv)
 {
-	a_list	*a;
-	a_list	*b;
+	t_lst	*a;
+	t_lst	*b;
 	int		bonus;
 
 	bonus = (argc >= 2 && !ft_strcmp("-v", argv[1]));

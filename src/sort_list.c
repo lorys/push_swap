@@ -12,18 +12,18 @@
 
 #include "push_swap.h"
 
-a_list		*sort_list(a_list *a)
+t_lst		*sort_list(t_lst *a)
 {
-	a_list	*dup;
-	a_list	*tmp;
+	t_lst	*dup;
+	t_lst	*tmp;
 
-	if (!(dup = (a_list *)malloc(sizeof(a_list))))
+	if (!(dup = (t_lst *)malloc(sizeof(t_lst))))
 		exit(0);
 	dup->prev = NULL;
 	while (a != NULL)
 	{
 		dup->content = a->content;
-		if (!(tmp = (a_list *)malloc(sizeof(a_list))))
+		if (!(tmp = (t_lst *)malloc(sizeof(t_lst))))
 			exit(0);
 		dup->next = (a->next == NULL) ? NULL : tmp;
 		if (a->next == NULL)

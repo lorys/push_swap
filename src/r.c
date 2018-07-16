@@ -12,9 +12,9 @@
 
 #include "push_swap.h"
 
-void	rrx(a_list **x, char *silent)
+void	rrx(t_lst **x, char *silent)
 {
-	a_list *last;
+	t_lst *last;
 
 	if (*x == NULL || ((*x)->prev == NULL && (*x)->next == NULL))
 		return ;
@@ -30,7 +30,7 @@ void	rrx(a_list **x, char *silent)
 		ft_printf("%s\n", silent);
 }
 
-void	rr(a_list **a, a_list **b, char *silent)
+void	rr(t_lst **a, t_lst **b, char *silent)
 {
 	rx(a, "");
 	rx(b, "");
@@ -38,9 +38,9 @@ void	rr(a_list **a, a_list **b, char *silent)
 		ft_printf("%s\n", silent);
 }
 
-void	rx(a_list **x, char *silent)
+void	rx(t_lst **x, char *silent)
 {
-	a_list *last;
+	t_lst *last;
 
 	if (*x == NULL || ((*x)->next == NULL && (*x)->prev == NULL))
 		return ;
@@ -55,7 +55,7 @@ void	rx(a_list **x, char *silent)
 		ft_printf("%s\n", silent);
 }
 
-void	rrr(a_list **a, a_list **b, char *silent)
+void	rrr(t_lst **a, t_lst **b, char *silent)
 {
 	rrx(a, "");
 	rrx(b, "");

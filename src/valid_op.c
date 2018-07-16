@@ -12,10 +12,10 @@
 
 #include "push_swap.h"
 
-int		valid_op(a_list *a)
+int		valid_op(t_lst *a)
 {
-	a_list *tma;
-	a_list *tmb;
+	t_lst *tma;
+	t_lst *tmb;
 
 	tma = a;
 	while (tma != NULL)

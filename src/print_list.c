@@ -12,7 +12,7 @@
 
 #include "push_swap.h"
 
-void		print_list(a_list *a)
+void		print_list(t_lst *a)
 {
 	if (a == NULL)
 		printf("(null)\n");

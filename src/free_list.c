@@ -12,9 +12,9 @@
 
 #include "push_swap.h"
 
-void		free_list(a_list *lst)
+void		free_list(t_lst *lst)
 {
-	a_list	*tmp;
+	t_lst	*tmp;
 
 	if (lst != NULL)
 	{

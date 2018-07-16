@@ -12,10 +12,10 @@
 
 #include "push_swap.h"
 
-a_list		*get_max(a_list **a)
+t_lst		*get_max(t_lst **a)
 {
-	a_list	*at;
-	a_list	*max;
+	t_lst	*at;
+	t_lst	*max;
 
 	at = *a;
 	max = NULL;

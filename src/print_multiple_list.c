@@ -12,7 +12,7 @@
 
 #include "push_swap.h"
 
-void		print_multiple_list(a_list *a, a_list *b)
+void		print_multiple_list(t_lst *a, t_lst *b)
 {
 	system("clear");
 	printf("%10s%20s\n", "LIST A", "LIST B");

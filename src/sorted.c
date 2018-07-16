@@ -12,12 +12,12 @@
 
 #include "push_swap.h"
 
-int			sorted(a_list **a)
+int			sorted(t_lst **a)
 {
-	a_list *tmp;
+	t_lst *tmp;
 
 	tmp = *a;
-	if (a_listlen(tmp) == 1)
+	if (t_lstlen(tmp) == 1)
 		return (1);
 	while (tmp != NULL)
 	{

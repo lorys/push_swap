@@ -12,11 +12,11 @@
 
 #include "push_swap.h"
 
-void		quick_sort_rev(a_list **a, a_list **b)
+void		quick_sort_rev(t_lst **a, t_lst **b)
 {
 	while (*b != get_max(b))
 	{
-		if (get_position_int(b, get_max(b)) < a_listlen(*b) / 2)
+		if (get_position_int(b, get_max(b)) < t_lstlen(*b) / 2)
 			rx(b, "rb");
 		else
 			rrx(b, "rrb");
@@ -27,11 +27,11 @@ void		quick_sort_rev(a_list **a, a_list **b)
 		quick_sort_rev(a, b);
 }
 
-void		quick_sort(a_list **a, a_list **b)
+void		quick_sort(t_lst **a, t_lst **b)
 {
 	int mediane;
 
-	while (a_listlen(*a) > 2 && !sorted(a))
+	while (t_lstlen(*a) > 2 && !sorted(a))
 	{
 		mediane = get_mediane(*a);
 		while (get_minus(a)->content < mediane)
@@ -47,7 +47,7 @@ void		quick_sort(a_list **a, a_list **b)
 			else
 				rx(a, "ra");
 		}
-		if (!sorted(a) && a_listlen(*a) == 2)
+		if (!sorted(a) && t_lstlen(*a) == 2)
 			sx(a, "sa");
 	}
 	quick_sort_rev(a, b);

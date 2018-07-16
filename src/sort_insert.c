@@ -12,9 +12,9 @@
 
 #include "push_swap.h"
 
-void		sort_insert(a_list **a)
+void		sort_insert(t_lst **a)
 {
-	a_list	*start;
+	t_lst	*start;
 	int		tmp;
 
 	start = *a;

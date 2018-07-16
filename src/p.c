@@ -12,9 +12,9 @@
 
 #include "push_swap.h"
 
-void	px(a_list **from, a_list **to, char *silent)
+void	px(t_lst **from, t_lst **to, char *silent)
 {
-	a_list *tmp;
+	t_lst *tmp;
 
 	if (*from == NULL)
 		return ;

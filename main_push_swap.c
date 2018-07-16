@@ -14,8 +14,8 @@
 
 int			main(int argc, char **argv)
 {
-	a_list *a;
-	a_list *b;
+	t_lst *a;
+	t_lst *b;
 
 	a = NULL;
 	b = NULL;
@@ -28,7 +28,7 @@ int			main(int argc, char **argv)
 	fill_list(&a, argv, argc, 0);
 	if (!valid_op(a))
 		handle_errors();
-	if (sorted(&a) || a_listlen(a) <= 1)
+	if (sorted(&a) || t_lstlen(a) <= 1)
 		return (0);
 	prepare_sort(&a, &b);
 	free_list(a);

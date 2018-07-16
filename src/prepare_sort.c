@@ -12,9 +12,9 @@
 
 #include "push_swap.h"
 
-void		prepare_sort(a_list **a, a_list **b)
+void		prepare_sort(t_lst **a, t_lst **b)
 {
-	if (a_listlen(*a) > 3)
+	if (t_lstlen(*a) > 3)
 		quick_sort(a, b);
 	else
 		sort_logic(a, b);

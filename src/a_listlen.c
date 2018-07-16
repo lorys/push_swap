@@ -12,7 +12,7 @@
 
 #include "push_swap.h"
 
-int			a_listlen(a_list *a)
+int			t_lstlen(t_lst *a)
 {
 	int	length;
 

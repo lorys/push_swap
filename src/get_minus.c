@@ -12,10 +12,10 @@
 
 #include "push_swap.h"
 
-a_list		*get_minus(a_list **a)
+t_lst		*get_minus(t_lst **a)
 {
-	a_list	*at;
-	a_list	*minus;
+	t_lst	*at;
+	t_lst	*minus;
 	int		length;
 
 	length = 0;

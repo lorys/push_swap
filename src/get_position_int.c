@@ -12,10 +12,10 @@
 
 #include "push_swap.h"
 
-int		get_position_int(a_list **x, a_list *y)
+int		get_position_int(t_lst **x, t_lst *y)
 {
 	int		i;
-	a_list	*tmp;
+	t_lst	*tmp;
 
 	tmp = *x;
 	i = 0;

@@ -12,8 +12,8 @@
 
 #include "push_swap.h"
 
-void		fill_list_partone(char *data, int *b, a_list **a, \
-		a_list **tmp)
+void		fill_list_partone(char *data, int *b, t_lst **a, \
+		t_lst **tmp)
 {
 	while (data[*b])
 	{
@@ -22,7 +22,7 @@ void		fill_list_partone(char *data, int *b, a_list **a, \
 		else if ((ft_isdigit(data[*b]) || data[*b] == '-') && \
 				valid_int(&(data[*b])))
 		{
-			if (!(*a = (a_list *)malloc(sizeof(a_list))))
+			if (!(*a = (t_lst *)malloc(sizeof(t_lst))))
 				exit(0);
 			(*a)->prev = *tmp;
 			if (*tmp != NULL)
@@ -39,9 +39,9 @@ void		fill_list_partone(char *data, int *b, a_list **a, \
 	}
 }
 
-void		fill_list_parttwo(a_list **a, int *i, char **data, a_list **tmp)
+void		fill_list_parttwo(t_lst **a, int *i, char **data, t_lst **tmp)
 {
-	if (!(*a = (a_list *)malloc(sizeof(a_list))))
+	if (!(*a = (t_lst *)malloc(sizeof(t_lst))))
 		exit(0);
 	(*a)->prev = *tmp;
 	if (*tmp != NULL)
@@ -52,11 +52,11 @@ void		fill_list_parttwo(a_list **a, int *i, char **data, a_list **tmp)
 	*a = (*a)->next;
 }
 
-void		fill_list(a_list **a, char **data, int size, int checker)
+void		fill_list(t_lst **a, char **data, int size, int checker)
 {
 	int		i;
 	int		b;
-	a_list	*tmp;
+	t_lst	*tmp;
 
 	tmp = NULL;
 	i = 1;

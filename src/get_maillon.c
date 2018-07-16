@@ -12,9 +12,9 @@
 
 #include "push_swap.h"
 
-a_list		*get_maillon(a_list **lst, int i)
+t_lst		*get_maillon(t_lst **lst, int i)
 {
-	a_list *a;
+	t_lst *a;
 
 	a = *lst;
 	while (a->next != NULL && i > 0)
