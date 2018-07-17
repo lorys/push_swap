@@ -6,20 +6,34 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/16 19:30:16 by llopez            #+#    #+#             */
-/*   Updated: 2018/07/16 20:22:37 by llopez           ###   ########.fr       */
+/*   Updated: 2018/07/17 03:53:35 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
+int			neg_or_po(char *intmax, char *str)
+{
+	int	i;
+
+	i = 0;
+	if (!ft_strcmp(intmax, str))
+		return (1);
+	while (str[i] && ft_isdigit(str[i]))
+	{
+		if (str[i] > intmax[i])
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 int			valid_int(char *str)
 {
 	int		i;
 	char	intmax[13];
-	char	intmin[13];
 
 	ft_strcpy(&intmax[0], "2147483647");
-	ft_strcpy(&intmin[0], "–2147483648");
 	i = 0;
 	while (str[i] && (ft_isdigit(str[i]) || str[i] == '-'))
 		i++;
@@ -30,12 +44,7 @@ int			valid_int(char *str)
 		i = 0;
 		if (str[i] == '-')
 			i++;
-		while (str[i] && (ft_isdigit(str[i]) || str[i] == '-'))
-		{
-			if (str[i] > intmax[i])
-				return (0);
-			i++;
-		}
+		return (neg_or_po(intmax, &str[i]));
 	}
 	return (1);
 }

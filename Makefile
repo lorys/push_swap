@@ -6,7 +6,7 @@
 #    By: llopez <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/09 13:36:27 by llopez            #+#    #+#              #
-#    Updated: 2018/07/17 01:02:58 by llopez           ###   ########.fr        #
+#    Updated: 2018/07/17 01:44:23 by llopez           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -78,6 +78,8 @@ $(LIBFT):
 	@printf "\033[32;1m LIBFT made \033[0m\n"
 
 clean:
+	make clean -C libft/
+	@rm -rf obj/
 	@printf "\033[41m Cleaned ! \033[0m\n"
 
 fclean:

@@ -6,11 +6,22 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/16 19:28:51 by llopez            #+#    #+#             */
-/*   Updated: 2018/07/16 19:54:18 by llopez           ###   ########.fr       */
+/*   Updated: 2018/07/17 03:51:08 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+
+int		ft_charintlen(char *str)
+{
+	int	i;
+
+	i = 0;
+	i += (str[i] == '-') ? 1 : 0;
+	while (str[i] && ft_isdigit(str[i]))
+		i++;
+	return (i);
+}
 
 int		good_params(char **data, int argc, int checker)
 {
@@ -32,7 +43,7 @@ int		good_params(char **data, int argc, int checker)
 			if ((ft_isdigit(data[i][b]) || data[i][b] == '-')\
 					&& !valid_int(&data[i][b]))
 				return (0);
-			b++;
+			b += (ft_isdigit(data[i][b])) ? ft_charintlen(&data[i][b]) : 1;
 		}
 		if ((int)ft_strlen(data[i]) != b)
 			return (0);
