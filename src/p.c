@@ -25,6 +25,7 @@ void	px(t_lst **from, t_lst **to, char *silent)
 		(*to)->next = NULL;
 		(*to)->prev = NULL;
 		(*from) = tmp;
+		tmp->prev = NULL;
 	}
 	else
 	{
@@ -33,6 +34,7 @@ void	px(t_lst **from, t_lst **to, char *silent)
 		(*to)->prev->prev = NULL;
 		*to = (*to)->prev;
 		*from = tmp;
+		tmp->prev = NULL;
 	}
 	if (silent[0] != '\0')
 		ft_printf("%s\n", silent);
