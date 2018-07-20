@@ -27,11 +27,43 @@ void		quick_sort_rev(t_lst **a, t_lst **b)
 		quick_sort_rev(a, b);
 }
 
+int		closest_med(t_lst *x, int mediane)
+{
+	int	closest_dwn;
+	int	closest_up;
+	t_lst	*start;
+
+	start = x;
+	closest_dwn = 0;
+	closest_up = 0;
+
+	while (x->next)
+		x = x->next;
+	while (x->prev)
+	{
+		if (x->content < mediane)
+			break;
+		closest_dwn++;
+		x = x->prev;
+	}
+	x = start;
+	while (x->next)
+	{
+		if (x->content < mediane)
+			break;
+		closest_up++;
+		x = x->next;
+	}
+	if (closest_dwn < closest_up)
+		return (0);
+	return (1);
+}
+
 void		quick_sort(t_lst **a, t_lst **b)
 {
 	int mediane;
 
-	while (t_lstlen(*a) > 2 && !sorted(a))
+	while (/*t_lstlen(*a) > 2 && */!sorted(a))
 	{
 		mediane = get_mediane(*a);
 		while (get_minus(a)->content < mediane)
@@ -39,11 +71,12 @@ void		quick_sort(t_lst **a, t_lst **b)
 			if (sorted(a) && *b == NULL)
 				return ;
 			if (sorted(a) && get_max(a)->content > get_max(b)->content && \
-					lastoflist(a) == get_max(a) && \
 					(*a)->content > get_max(b)->content)
 				break ;
 			if ((*a)->content < mediane)
 				px(a, b, "pb");
+			else if (!closest_med(*a, mediane))
+				rrx(a, "rra");
 			else
 				rx(a, "ra");
 		}
