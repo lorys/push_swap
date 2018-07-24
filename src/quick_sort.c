@@ -14,74 +14,51 @@
 
 void		quick_sort_rev(t_lst **a, t_lst **b)
 {
-	while (*b != get_max(b))
+	int mediane;
+
+	mediane = get_mediane(*b);
+	while (*b != NULL && get_max(b)->content > mediane)
 	{
-		if (get_position_int(b, get_max(b)) < t_lstlen(*b) / 2)
-			rx(b, "rb");
+		if ((*b)->content > mediane)
+			px(b, a, "pa");
 		else
-			rrx(b, "rrb");
+			rx(b, "rb");
+		if (!sorted(a))
+			break;
 	}
-	if ((*b)->content == get_max(b)->content)
-		px(b, a, "pa");
+	while (!sorted(a))
+		px(a, b, "pb");
 	if (*b != NULL)
 		quick_sort_rev(a, b);
-}
-
-int		closest_med(t_lst *x, int mediane)
-{
-	int	closest_dwn;
-	int	closest_up;
-	t_lst	*start;
-
-	start = x;
-	closest_dwn = 0;
-	closest_up = 0;
-
-	while (x->next)
-		x = x->next;
-	while (x->prev)
-	{
-		if (x->content < mediane)
-			break;
-		closest_dwn++;
-		x = x->prev;
-	}
-	x = start;
-	while (x->next)
-	{
-		if (x->content < mediane)
-			break;
-		closest_up++;
-		x = x->next;
-	}
-	if (closest_dwn < closest_up)
-		return (0);
-	return (1);
 }
 
 void		quick_sort(t_lst **a, t_lst **b)
 {
 	int mediane;
 
-	while (/*t_lstlen(*a) > 2 && */!sorted(a))
-	{
-		mediane = get_mediane(*a);
-		while (get_minus(a)->content < mediane)
-		{
-			if (sorted(a) && *b == NULL)
+	mediane = get_mediane(*a);
+	while (get_minus(a)->content < mediane)
+	{ 
+		if ((sorted(a) && *b == NULL) \
+			|| (sorted(a) && (*a)->content > \
+			get_max(b)->content))
 				return ;
-			if (sorted(a) && get_max(a)->content > get_max(b)->content && \
-					(*a)->content > get_max(b)->content)
-				break ;
-			if ((*a)->content < mediane)
-				px(a, b, "pb");
-			else if (!closest_med(*a, mediane))
-				rrx(a, "rra");
-			else
-				rx(a, "ra");
-		}
-		if (!sorted(a) && t_lstlen(*a) == 2)
-			sx(a, "sa");
+		if ((*a)->content < mediane)
+			px(a, b, "pb");
+		else
+			rx(a, "ra");
 	}
-	quick_sort_rev(a, b);
+	if (!sorted(a))
+		quick_sort(a, b);
+	while (*b != NULL && get_max(b)->content > mediane)
+	{ 
+		if ((*b)->content > mediane)
+			px(b, a, "pa");
+		else
+			rx(b, "rb");
+		if (!sorted(a))
+			break;
+	} 
+	if (!sorted(a))
+		quick_sort(a, b);
 }
