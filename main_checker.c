@@ -43,7 +43,7 @@ void	listen(t_lst **a, t_lst **b, int bonus)
 		else if (!ft_strcmp(line, "sb"))
 			sx(b, "");
 		else if (!ft_strcmp(line, "ss"))
-			ss(a, b, "");
+			ss(a, b);
 		else if (!ft_strcmp(line, "ra"))
 			rx(a, "");
 		else if (!ft_strcmp(line, "rb"))
@@ -67,7 +67,7 @@ int		main(int argc, char **argv)
 	b = NULL;
 	if (!good_params(argv, argc, 1))
 		handle_errors();
-	if (ft_nbrnbr(argv[1 + bonus]) > 1)
+	if (ft_nbrnbr(argv[1 + bonus]) >= 1)
 	{
 		fill_list(&a, argv, argc, 1);
 		if (!valid_op(a))

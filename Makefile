@@ -26,6 +26,7 @@ SRC_GLOBAL = src/p.c \
 	  src/get_max.c \
 	  src/get_minus.c \
 	  src/get_mediane.c \
+	  src/get_mediane_range.c \
 	  src/get_position_int.c \
 	  src/good_params.c \
 	  src/lastoflist.c \

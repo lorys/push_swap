@@ -12,11 +12,26 @@
 
 #include "push_swap.h"
 
-void		quick_sort_rev(t_lst **a, t_lst **b)
+void		quick_sort(t_lst **a, t_lst **b, int len)
 {
-	int mediane;
+	int	mediane;
+	int	pushed;
 
-	mediane = get_mediane(*b);
+	pushed = 0;
+	mediane = get_mediane_range(*a, len);
+	while (get_minus(a)->content < mediane)
+	{ 
+		if ((sorted(a) && *b == NULL) \
+			|| (sorted(a) && (*a)->content > \
+			get_max(b)->content))
+				return ;
+		if ((*a)->content < mediane && ++pushed)
+			px(a, b, "pb");
+		else
+			rx(a, "ra");
+	}
+	if (!sorted(a))
+		quick_sort(a, b, pushed);
 	while (*b != NULL && get_max(b)->content > mediane)
 	{
 		if ((*b)->content > mediane)
@@ -25,40 +40,7 @@ void		quick_sort_rev(t_lst **a, t_lst **b)
 			rx(b, "rb");
 		if (!sorted(a))
 			break;
-	}
-	while (!sorted(a))
-		px(a, b, "pb");
-	if (*b != NULL)
-		quick_sort_rev(a, b);
-}
-
-void		quick_sort(t_lst **a, t_lst **b)
-{
-	int mediane;
-
-	mediane = get_mediane(*a);
-	while (get_minus(a)->content < mediane)
-	{ 
-		if ((sorted(a) && *b == NULL) \
-			|| (sorted(a) && (*a)->content > \
-			get_max(b)->content))
-				return ;
-		if ((*a)->content < mediane)
-			px(a, b, "pb");
-		else
-			rx(a, "ra");
-	}
-	if (!sorted(a))
-		quick_sort(a, b);
-	while (*b != NULL && get_max(b)->content > mediane)
-	{ 
-		if ((*b)->content > mediane)
-			px(b, a, "pa");
-		else
-			rx(b, "rb");
-		if (!sorted(a))
-			break;
 	} 
 	if (!sorted(a))
-		quick_sort(a, b);
+		quick_sort(a, b, pushed);
 }

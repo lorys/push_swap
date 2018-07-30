@@ -36,4 +36,5 @@ void		print_multiple_list(t_lst *a, t_lst *b)
 		if (b != NULL)
 			b = b->next;
 	}
+	usleep(100000);
 }

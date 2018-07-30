@@ -15,7 +15,7 @@
 void		print_list(t_lst *a)
 {
 	if (a == NULL)
-		printf("(null)\n");
+		ft_printf("(null)\n");
 	while (a != NULL)
 	{
 		ft_printf("addr %p\n", a);

@@ -16,8 +16,7 @@ void		prepare_sort(t_lst **a, t_lst **b)
 {
 	if (t_lstlen(*a) > 3)
 	{
-		quick_sort(a, b);
-		quick_sort_rev(a, b);
+		quick_sort(a, b, t_lstlen(*a));
 	}
 	else
 		sort_logic(a, b);

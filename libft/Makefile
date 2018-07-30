@@ -129,7 +129,7 @@ $(NAME): $(OBJ)
 $(OBJDIR)%.o: %.c libft.h
 	@mkdir -p $(OBJDIR) 
 	@printf "\033[33m $@ \033[0m\n"
-	@gcc -o $@ $(FLAG) -c $< -I get_next_line.h
+	@gcc -o $@ $(FLAG) -c $< -I ../includes
 
 clean:
 	rm -rf $(OBJDIR)

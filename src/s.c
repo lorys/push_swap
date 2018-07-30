@@ -25,10 +25,8 @@ void		sx(t_lst **x, char *silent)
 		ft_printf("%s\n", silent);
 }
 
-void		ss(t_lst **a, t_lst **b, char *silent)
+void		ss(t_lst **a, t_lst **b)
 {
-	sx(a, (silent[0] != '\0') ? silent : "");
-	sx(b, (silent[0] != '\0') ? silent : "");
-	if (silent[0] != '\0')
-		ft_printf("%s\n", silent);
+	sx(a, "sa");
+	sx(b, "sb");
 }

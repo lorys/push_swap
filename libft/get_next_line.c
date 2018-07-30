@@ -75,7 +75,7 @@ static int		ft_fill_buff(int fd, char **line, char **buff)
 
 int				get_next_line(const int fd, char **line)
 {
-	static char	*buff[OPEN_MAX];
+	static char	*buff[1000];
 
 	if (fd < 0 || read(fd, NULL, 0) == -1 || line == NULL)
 		return (-1);

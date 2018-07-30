@@ -49,6 +49,7 @@ int		ft_printf_bigs(const char *format, va_list ap, int *skip, t_arg *fg)
 
 	len_str = 0;
 	(void)str;
+	(void)width;
 	if (format[0] == 'S' || (format[0] == 's' && fg->l))
 	{
 		str_char = NULL;

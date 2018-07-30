@@ -37,7 +37,7 @@ int		good_params(char **data, int argc, int checker)
 	while (i < argc)
 	{
 		b = 0;
-		while (ft_isdigit(data[i][b]) || data[i][b] == '-' \
+		while (ft_isdigit(data[i][b]) || (data[i][b] == '-' && ft_isdigit(data[i][b + 1])) \
 				|| data[i][b] == ' ' || data[i][b] == '\t')
 		{
 			if ((ft_isdigit(data[i][b]) || data[i][b] == '-')\
