@@ -6,14 +6,16 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/16 19:18:37 by llopez            #+#    #+#             */
-/*   Updated: 2018/07/16 19:20:25 by llopez           ###   ########.fr       */
+/*   Updated: 2018/08/17 13:07:53 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	handle_errors(void)
+void	handle_errors(t_lst *a, t_lst *b)
 {
+	free_list(a);
+	free_list(b);
 	write(2, "Error\n", 6);
 	exit(0);
 }

@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/12 05:07:50 by llopez            #+#    #+#             */
-/*   Updated: 2018/07/16 23:30:51 by llopez           ###   ########.fr       */
+/*   Updated: 2018/08/17 13:11:33 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	listen_part(t_lst **a, t_lst **b, char *line)
 	else if (!ft_strcmp(line, "pb"))
 		px(a, b, "");
 	else
-		handle_errors();
+		handle_errors(*a, *b);
 }
 
 void	listen(t_lst **a, t_lst **b, int bonus)
@@ -54,6 +54,7 @@ void	listen(t_lst **a, t_lst **b, int bonus)
 			print_multiple_list(*a, *b);
 		free(line);
 	}
+	free(line);
 }
 
 int		main(int argc, char **argv)
@@ -66,12 +67,12 @@ int		main(int argc, char **argv)
 	a = NULL;
 	b = NULL;
 	if (!good_params(argv, argc, 1))
-		handle_errors();
+		handle_errors(NULL, NULL);
 	if (ft_nbrnbr(argv[1 + bonus]) >= 1)
 	{
 		fill_list(&a, argv, argc, 1);
 		if (!valid_op(a))
-			handle_errors();
+			handle_errors(a, b);
 		listen(&a, &b, bonus);
 	}
 	if (sorted(&a) && b == NULL)
@@ -79,5 +80,6 @@ int		main(int argc, char **argv)
 	else
 		ft_printf("\033[41m KO \033[0m\n");
 	free_list(a);
+	free_list(b);
 	return (0);
 }

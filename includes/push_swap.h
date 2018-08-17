@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 13:02:03 by llopez            #+#    #+#             */
-/*   Updated: 2018/08/01 16:00:39 by llopez           ###   ########.fr       */
+/*   Updated: 2018/08/17 13:09:34 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int					ft_nbrnbr(char *str);
 void				sort_logic(t_lst **a, t_lst **b);
 t_lst				*lastoflist(t_lst **x);
 int					get_position_int(t_lst **x, t_lst *y);
-void				handle_errors(void);
+void				handle_errors(t_lst *a, t_lst *b);
 void				free_list(t_lst *lst);
 
 #endif
