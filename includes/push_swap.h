@@ -6,12 +6,13 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 13:02:03 by llopez            #+#    #+#             */
-/*   Updated: 2018/08/17 13:09:34 by llopez           ###   ########.fr       */
+/*   Updated: 2018/09/20 13:55:42 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
+# define PAQUETS 45
 # include <unistd.h>
 # include <libft.h>
 # include <stdio.h>

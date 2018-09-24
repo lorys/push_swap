@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/02 19:21:21 by llopez            #+#    #+#             */
-/*   Updated: 2018/08/17 13:10:29 by llopez           ###   ########.fr       */
+/*   Updated: 2018/09/19 12:13:01 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,5 @@ int			main(int argc, char **argv)
 	prepare_sort(&a, &b);
 	free_list(a);
 	free_list(b);
-	read(0, NULL, 1);
 	return (0);
 }

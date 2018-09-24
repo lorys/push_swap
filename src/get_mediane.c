@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/16 19:15:43 by llopez            #+#    #+#             */
-/*   Updated: 2018/08/17 12:45:52 by llopez           ###   ########.fr       */
+/*   Updated: 2018/09/24 15:38:29 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int				get_mediane(t_lst *a, t_lst *b)
 	int		tmp;
 
 	sort_lst = sort_list(a);
-	if ((t_lstlen(a) + t_lstlen(b)) > 300 && t_lstlen(a) > 7)
+	if ((t_lstlen(a) + t_lstlen(b)) > 100 && t_lstlen(a) > 45)
 		tmp = get_maillon(&sort_lst, t_lstlen(sort_lst) / 7)->content;
 	else if ((t_lstlen(a) + t_lstlen(b)) <= 100 \
 			&& t_lstlen(a) > 3)

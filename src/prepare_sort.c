@@ -6,7 +6,7 @@
 /*   By: llopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/16 19:18:07 by llopez            #+#    #+#             */
-/*   Updated: 2018/08/16 15:08:43 by llopez           ###   ########.fr       */
+/*   Updated: 2018/09/24 15:31:29 by llopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,16 @@ void		prepare_sort(t_lst **a, t_lst **b)
 {
 	if (t_lstlen(*a) > 3)
 	{
+		if (t_lstlen(*a) < 10)
+		{
+			while (*a != get_minus(a))
+			{
+				if (t_lstlen(*a) / 2 < get_position_int(a, get_minus(a)))
+					rrx(a, "rra");
+				else
+					rx(a, "ra");
+			}
+		}
 		quick_sort(a, b);
 		quick_sort_part(a, b);
 	}
